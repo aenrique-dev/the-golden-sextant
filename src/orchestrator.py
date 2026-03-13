@@ -22,8 +22,9 @@ from datetime import datetime
 from pathlib import Path
 
 # ── Agent imports ──────────────────────────────────────────────────────────────
-from agents.scout      import run_scouts
-from agents.interpreter import interpret_all
+from agents.scout        import run_scouts
+from agents.search_scout import run_search_scouts
+from agents.interpreter  import interpret_all
 from agents.ranker      import rank_signals
 from agents.activator   import activate_top_signals
 from memory.store       import StateStore
@@ -56,6 +57,7 @@ def run_pipeline(
     top_n: int = 7,
     min_confidence: float = 0.5,
     dry_run: bool = False,
+    use_search: bool = True,
     output_formats: list = None,
     verbose: bool = True
 ) -> Digest:
@@ -113,6 +115,19 @@ def run_pipeline(
             watchlist,
             skip_relevance_check=False
         )
+
+        if use_search:
+            if verbose:
+                print("[Step 1b/4] Search Scout — running keyword searches...")
+            seen_urls = {p.url for p in pages}
+            search_pages = run_search_scouts(
+                client,
+                watchlist,
+                seen_urls=seen_urls
+            )
+            pages.extend(search_pages)
+            if verbose:
+                print(f"  → {len(search_pages)} additional pages from search\n")
 
     # Filter to pages that have actually changed since last run
     changed_pages = []
@@ -181,6 +196,18 @@ def run_pipeline(
         1 for e in watchlist.get("partners", [])
         for _ in e.get("pages", [])
     )
+    media_count = sum(
+        1 for e in watchlist.get("media_sources", [])
+        for _ in e.get("pages", [])
+    )
+    channel_count = sum(
+        1 for e in watchlist.get("channel_news_sources", [])
+        for _ in e.get("pages", [])
+    )
+    analyst_count = sum(
+        1 for e in watchlist.get("analyst_sources", [])
+        for _ in e.get("pages", [])
+    )
 
     summary = _build_summary(entries, len(pages), len(new_signals))
 
@@ -193,7 +220,10 @@ def run_pipeline(
         summary_narrative=summary,
         watchlist_coverage={
             "competitor": competitor_count,
-            "partner": partner_count
+            "partner": partner_count,
+            "media": media_count,
+            "channel_news": channel_count,
+            "analyst": analyst_count
         }
     )
 

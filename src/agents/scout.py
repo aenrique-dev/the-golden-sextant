@@ -194,6 +194,22 @@ def run_scouts(
         for page_url in entry.get("pages", []):
             tasks.append((page_url, entry["name"], "marketplace"))
 
+    for entry in watchlist.get("media_sources", []):
+        for page_url in entry.get("pages", []):
+            tasks.append((page_url, entry["name"], "media"))
+
+    for entry in watchlist.get("channel_news_sources", []):
+        for page_url in entry.get("pages", []):
+            tasks.append((page_url, entry["name"], "channel_news"))
+
+    for entry in watchlist.get("analyst_sources", []):
+        for page_url in entry.get("pages", []):
+            tasks.append((page_url, entry["name"], "analyst"))
+
+    for entry in watchlist.get("linkedin_rss", []):
+        for page_url in entry.get("pages", []):
+            tasks.append((page_url, entry["name"], "linkedin"))
+
     print(f"[Scout] Starting {len(tasks)} fetch tasks with {max_workers} workers...")
 
     results = []

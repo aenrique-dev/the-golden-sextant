@@ -1,0 +1,23 @@
+hackathon.md
+
+# Internal GTM strategy — not for public repos
+config/watchlist.json
+
+# Runtime data and operational outputs
+data/
+
+# Sample outputs with real account/partner framing
+sample_output/
+
+# Claude local settings
+.claude/settings.local.json
+
+# Accidental macOS system bundle
+src/myDocuments.cannedSearch/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.env

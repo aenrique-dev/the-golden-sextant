@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecosystem Radar — Pitch Deck</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --accent:  #6c47f5;
+      --accent2: #7c5cfc;
+      --green:   #059669;
+      --amber:   #d97706;
+      --red:     #dc2626;
+      --text:    #111827;
+      --muted:   #6b7280;
+      --border:  #e2e4ec;
+      --bg:      #f5f6fa;
+      --surface: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f0a1e;
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── DECK CONTAINER ── */
+    .deck {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── NAV BAR ── */
+    .nav-bar {
+      background: #0f0a1e;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      flex-shrink: 0;
+    }
+    .nav-brand {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-brand i { color: var(--accent2); }
+    .nav-controls { display: flex; align-items: center; gap: 16px; }
+    .nav-dots { display: flex; gap: 8px; }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .dot.active { background: var(--accent2); transform: scale(1.3); }
+    .nav-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { background: rgba(108,71,245,0.3); border-color: var(--accent2); color: white; }
+    .nav-btn:disabled { opacity: 0.25; cursor: default; }
+    .slide-counter {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      font-weight: 500;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* ── SHARED SLIDE LAYOUT ── */
+    .slide-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 72px 40px;
+      overflow: hidden;
+    }
+    .slide-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .slide-title {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .slide-sub {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 640px;
+    }
+
+    /* ── SLIDE 1: TITLE ── */
+    #slide-1 {
+      background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%);
+    }
+    #slide-1 .slide-inner {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .hero-eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent2);
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-size: 72px; font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.0; color: white; margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--accent2); }
+    .hero-sub {
+      font-size: 22px; font-weight: 400; color: rgba(255,255,255,0.55);
+      line-height: 1.4; max-width: 580px; margin-bottom: 48px;
+    }
+    .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-tag {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1px solid rgba(108,71,245,0.4);
+      background: rgba(108,71,245,0.1);
+      font-size: 12px; font-weight: 600; color: var(--accent2);
+      letter-spacing: 0.02em;
+    }
+    .hero-byline {
+      position: absolute; bottom: 80px; right: 72px;
+      text-align: right; color: rgba(255,255,255,0.25);
+      font-size: 12px; line-height: 1.6;
+    }
+
+    /* ── SLIDE 2: THE PROBLEM ── */
+    #slide-2 { background: var(--bg); }
+    #slide-2 .slide-label { color: var(--red); }
+    #slide-2 .slide-title { color: var(--text); }
+    #slide-2 .slide-sub { color: var(--muted); margin-bottom: 40px; }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+    .problem-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .problem-card .icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .problem-card h3 { font-size: 15px; font-weight: 700; color: var(--text); }
+    .problem-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .stat-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 12px; font-weight: 700;
+      margin-top: 4px; width: fit-content;
+    }
+
+    /* ── SLIDE 3: HOW IT WORKS ── */
+    #slide-3 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
+    #slide-3 .slide-label { color: var(--accent2); }
+    #slide-3 .slide-title { color: white; }
+    #slide-3 .slide-sub { color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+
+    .pipeline-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+    .pipeline-step {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .pipeline-step + .pipeline-step { margin-left: 12px; }
+    .pipeline-step .step-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 2px;
+    }
+    .pipeline-step h3 { font-size: 16px; font-weight: 700; color: white; }
+    .pipeline-step p { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .pipeline-arrow {
+      display: flex; align-items: center; padding: 0 4px;
+      color: rgba(255,255,255,0.2); flex-shrink: 0;
+    }
+    .pillars-row {
+      display: flex; gap: 12px;
+    }
+    .pillar-chip {
+      flex: 1; padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(108,71,245,0.3);
+      background: rgba(108,71,245,0.08);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pillar-chip span { font-size: 13px; font-weight: 600; color: white; }
+    .pillar-chip i { color: var(--accent2); flex-shrink: 0; }
+
+    /* ── SLIDE 4: IN PRACTICE — AE ── */
+    #slide-5 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
+    #slide-5 .slide-label { color: #60a5fa; }
+    #slide-5 .slide-title { color: white; }
+    #slide-5 .slide-sub   { color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+
+    .watchlist-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .account-chip {
+      padding: 5px 12px; border-radius: 20px;
+      border: 1px solid rgba(96,165,250,0.3);
+      background: rgba(96,165,250,0.07);
+      font-size: 12px; font-weight: 600; color: #93c5fd;
+    }
+
+    .slack-mock {
+      background: #1a1d21;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .slack-header {
+      background: #19191d;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      flex-shrink: 0;
+    }
+    .slack-hash { font-size: 16px; color: rgba(255,255,255,0.25); font-weight: 700; }
+    .slack-channel { font-size: 13px; font-weight: 700; color: white; }
+    .slack-channel-sub { font-size: 11px; color: rgba(255,255,255,0.25); margin-left: 4px; }
+    .slack-body-wrap { padding: 16px 20px; overflow: hidden; display: flex; flex-direction: column; gap: 0; }
+    .slack-msg-row { display: flex; align-items: flex-start; gap: 12px; }
+    .slack-avatar {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .slack-msg-content { flex: 1; }
+    .slack-sender-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .slack-sender { font-size: 14px; font-weight: 700; color: white; }
+    .slack-app-badge {
+      font-size: 10px; font-weight: 700; background: var(--accent);
+      color: white; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.02em;
+    }
+    .slack-ts { font-size: 11px; color: rgba(255,255,255,0.25); }
+    .slack-intro { font-size: 12.5px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 10px; }
+    .slack-signal {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 8px;
+      border-left: 2px solid transparent;
+    }
+    .slack-signal.high  { border-left-color: #f87171; }
+    .slack-signal.medium { border-left-color: #fbbf24; }
+    .sig-badge {
+      font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 4px;
+      letter-spacing: 0.06em; white-space: nowrap; margin-top: 2px; flex-shrink: 0;
+    }
+    .sig-badge.high   { background: rgba(220,38,38,0.2); color: #f87171; }
+    .sig-badge.medium { background: rgba(217,119,6,0.2);  color: #fbbf24; }
+    .sig-text { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .sig-text strong { color: white; font-weight: 600; }
+    .slack-footer {
+      font-size: 11px; color: rgba(255,255,255,0.2);
+      margin-top: 6px; padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ── SLIDE 4: WHO BENEFITS ── */
+    #slide-4 { background: var(--bg); }
+    #slide-4 .slide-label { color: var(--green); }
+    #slide-4 .slide-title { color: var(--text); }
+    #slide-4 .slide-sub { color: var(--muted); margin-bottom: 36px; }
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+    .persona-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .persona-card .persona-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .persona-card h3 { font-size: 14px; font-weight: 700; color: var(--text); }
+    .persona-card .role { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .persona-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .persona-card ul li {
+      font-size: 12px; color: var(--muted); line-height: 1.4;
+      display: flex; gap: 6px; align-items: flex-start;
+    }
+    .persona-card ul li::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 5px;
+    }
+
+    /* ── SLIDE 6: IMPACT / ROI ── */
+    #slide-6 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
+    #slide-6 .slide-label { color: var(--green); }
+    #slide-6 .slide-title { color: white; }
+    #slide-6 .slide-sub { color: rgba(255,255,255,0.5); margin-bottom: 36px; }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .impact-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .impact-stat .big-num {
+      font-size: 44px; font-weight: 900; letter-spacing: -0.03em;
+      color: var(--accent2); line-height: 1;
+    }
+    .impact-stat .stat-label { font-size: 13px; font-weight: 600; color: white; }
+    .impact-stat .stat-note { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.4; }
+
+    .tools-row {
+      display: flex; gap: 12px;
+    }
+    .tool-chip {
+      flex: 1; padding: 14px 16px;
+      border-radius: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .tool-chip.replaced {
+      background: rgba(220,38,38,0.08);
+      border: 1px solid rgba(220,38,38,0.2);
+    }
+    .tool-chip.replaced .chip-label { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; }
+    .tool-chip.replaced .chip-cost { font-size: 11px; color: rgba(220,38,38,0.8); font-weight: 600; }
+    .tool-chip.replaced i { color: rgba(220,38,38,0.6); }
+    .tool-chip.ours {
+      background: rgba(108,71,245,0.12);
+      border: 1px solid rgba(108,71,245,0.3);
+    }
+    .tool-chip.ours .chip-label { color: white; font-size: 13px; font-weight: 700; }
+    .tool-chip.ours .chip-cost { font-size: 11px; color: var(--accent2); font-weight: 700; }
+    .tool-chip.ours i { color: var(--accent2); }
+    .chip-text { display: flex; flex-direction: column; gap: 2px; }
+
+    .vs-divider {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.2);
+      letter-spacing: 0.05em; padding: 0 4px;
+    }
+
+    /* ── SLIDE 7: COMPETITIVE LANDSCAPE ── */
+    #slide-7 { background: var(--bg); }
+    #slide-7 .slide-label { color: var(--amber); }
+    #slide-7 .slide-title { color: var(--text); }
+    #slide-7 .slide-sub   { color: var(--muted); margin-bottom: 28px; }
+
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      flex: 1;
+    }
+    .comp-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .comp-card.ours {
+      border-color: var(--accent);
+      background: linear-gradient(145deg, #faf8ff, #f3efff);
+      box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(108,71,245,0.12);
+    }
+    .comp-card .comp-name {
+      font-size: 15px; font-weight: 800; color: var(--text);
+    }
+    .comp-card.ours .comp-name { color: var(--accent); }
+    .comp-card .comp-category {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+    }
+    .comp-card .comp-price {
+      font-size: 12px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 5px; width: fit-content;
+      margin-bottom: 4px;
+    }
+    .comp-card .comp-price.expensive {
+      background: rgba(220,38,38,0.07); color: var(--red);
+    }
+    .comp-card .comp-price.ours-price {
+      background: rgba(108,71,245,0.1); color: var(--accent);
+    }
+    .comp-card .comp-gaps {
+      list-style: none; display: flex; flex-direction: column; gap: 5px;
+      flex: 1;
+    }
+    .comp-card .comp-gaps li {
+      font-size: 11.5px; color: var(--muted); line-height: 1.4;
+      display: flex; gap: 6px; align-items: flex-start;
+    }
+    .comp-card .comp-gaps li i { flex-shrink: 0; margin-top: 1px; }
+    .comp-card.ours .comp-gaps li { color: var(--text); }
+    .comp-card.ours .comp-gaps li i { color: var(--green); }
+    .ours-badge {
+      position: absolute; top: -1px; right: 16px;
+      background: var(--accent); color: white;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 8px;
+      border-radius: 0 0 6px 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" id="slide-1">
+    <div class="slide-inner">
+      <div class="hero-eyebrow">
+        <i data-lucide="radar" style="width:14px;height:14px;"></i>
+        Obsidian Security · Partnerships · Hackathon 2026
+      </div>
+      <div class="hero-title">Ecosystem<br><span>Radar</span></div>
+      <div class="hero-sub">
+        Real-time partner and competitive intelligence — automated, prioritized, and delivered before you need it.
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag">SSPM</span>
+        <span class="hero-tag">Agentic AI</span>
+        <span class="hero-tag">SaaS Supply Chain</span>
+        <span class="hero-tag">Partner Intelligence</span>
+        <span class="hero-tag">Competitive Signals</span>
+      </div>
+    </div>
+    <div class="hero-byline">
+      Andres Enrique<br>Regional VAR Partner Manager<br>Obsidian Security
+    </div>
+  </div>
+
+  <!-- SLIDE 2: THE PROBLEM -->
+  <div class="slide" id="slide-2">
+    <div class="slide-inner">
+      <div class="slide-label" style="color:var(--red);">
+        <i data-lucide="alert-triangle" style="width:13px;height:13px;"></i>
+        The Problem
+      </div>
+      <div class="slide-title">We're flying blind on what the ecosystem is doing.</div>
+      <div class="slide-sub">Every signal that should drive action — a competitor move, a partner opening, a buying signal at a target account — is buried in websites nobody has time to read.</div>
+
+      <div class="problem-grid" style="margin-top:28px;">
+        <div class="problem-card">
+          <div class="icon-wrap" style="background:rgba(220,38,38,0.08);">
+            <i data-lucide="clock" style="width:20px;height:20px;color:var(--red);"></i>
+          </div>
+          <h3>Manual research is eating the team</h3>
+          <p>AEs, partner managers, and marketers each spend 3–5 hours per week manually checking competitor blogs, LinkedIn, news sites, and partner pages. That's 12–20 hours a week across a team of 4 — gone.</p>
+          <div class="stat-pill" style="background:rgba(220,38,38,0.08);color:var(--red);">
+            <i data-lucide="trending-up" style="width:11px;height:11px;"></i>
+            60–80 hours/month of lost research time
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="icon-wrap" style="background:rgba(217,119,6,0.08);">
+            <i data-lucide="dollar-sign" style="width:20px;height:20px;color:var(--amber);"></i>
+          </div>
+          <h3>Paid tools are expensive and generic</h3>
+          <p>LinkedIn Sales Navigator ($100/seat/month), Klue or Crayon ($40K–$80K/year), Bombora intent data ($30K+/year) — none of them are built for the SaaS security partner motion or Obsidian's specific GTM pillars.</p>
+          <div class="stat-pill" style="background:rgba(217,119,6,0.08);color:var(--amber);">
+            <i data-lucide="trending-up" style="width:11px;height:11px;"></i>
+            $80K–$150K/year in tools that don't fit
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="icon-wrap" style="background:rgba(37,99,235,0.08);">
+            <i data-lucide="bell-off" style="width:20px;height:20px;color:var(--blue,#2563eb);"></i>
+          </div>
+          <h3>Intelligence arrives late — or not at all</h3>
+          <p>By the time someone notices that AppOmni launched a partner program, or CrowdStrike is bundling SSPM into Falcon Go, our partners have already been pitched. The window to respond is closed.</p>
+          <div class="stat-pill" style="background:rgba(37,99,235,0.08);color:#2563eb;">
+            <i data-lucide="timer-off" style="width:11px;height:11px;"></i>
+            Average lag: 2–4 weeks behind competitors
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="icon-wrap" style="background:rgba(108,71,245,0.08);">
+            <i data-lucide="users" style="width:20px;height:20px;color:var(--accent);"></i>
+          </div>
+          <h3>No account-level signal detection</h3>
+          <p>When a CISO at CapitalOne posts about SaaS privilege sprawl, or Fidelity posts a Director of SaaS Security job req — that's a live buying signal. Today, nobody sees it unless they happen to be scrolling LinkedIn at the right moment.</p>
+          <div class="stat-pill" style="background:rgba(108,71,245,0.08);color:var(--accent);">
+            <i data-lucide="search-x" style="width:11px;height:11px;"></i>
+            Buying signals missed every week
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: HOW IT WORKS -->
+  <div class="slide" id="slide-3">
+    <div class="slide-inner">
+      <div class="slide-label">
+        <i data-lucide="cpu" style="width:13px;height:13px;"></i>
+        How It Works
+      </div>
+      <div class="slide-title" style="color:white;">Scout. Interpret. Rank. Activate.</div>
+      <div class="slide-sub">A four-stage AI pipeline runs on a schedule, reads the ecosystem so you don't have to, and delivers only what requires action.</div>
+
+      <div class="pipeline-row" style="margin-top:32px;">
+        <div class="pipeline-step">
+          <div class="step-num">Stage 1</div>
+          <h3>Scout</h3>
+          <p>Fetches 47+ pages in parallel — competitor blogs, partner sites, media, LinkedIn RSS, analyst sources. Strips noise. Pre-filters with Claude Haiku.</p>
+        </div>
+        <div class="pipeline-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px;"></i></div>
+        <div class="pipeline-step">
+          <div class="step-num">Stage 2</div>
+          <h3>Interpret</h3>
+          <p>Claude Sonnet reads each page through Obsidian's GTM lens. Extracts signals with title, type, summary, and why it matters for our pipeline.</p>
+        </div>
+        <div class="pipeline-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px;"></i></div>
+        <div class="pipeline-step">
+          <div class="step-num">Stage 3</div>
+          <h3>Rank</h3>
+          <p>Every signal scored HIGH / MEDIUM / LOW by urgency, competitive impact, and partner activation potential. Sorted before it reaches you.</p>
+        </div>
+        <div class="pipeline-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px;"></i></div>
+        <div class="pipeline-step">
+          <div class="step-num">Stage 4</div>
+          <h3>Activate</h3>
+          <p>For every HIGH/MEDIUM signal: which partner to call, what to say, and a ready-to-send outreach draft. Action, not information.</p>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">Monitors across Obsidian's three GTM pillars</div>
+        <div class="pillars-row">
+          <div class="pillar-chip">
+            <i data-lucide="shield-check" style="width:18px;height:18px;"></i>
+            <span>SSPM — SaaS Security Posture Management</span>
+          </div>
+          <div class="pillar-chip">
+            <i data-lucide="bot" style="width:18px;height:18px;"></i>
+            <span>Agentic AI — Prompt Injection &amp; GenAI Governance</span>
+          </div>
+          <div class="pillar-chip">
+            <i data-lucide="link-2" style="width:18px;height:18px;"></i>
+            <span>SaaS Supply Chain — OAuth &amp; Integration Risk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHO BENEFITS -->
+  <div class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="slide-label" style="color:var(--green);">
+        <i data-lucide="users" style="width:13px;height:13px;"></i>
+        Who Benefits
+      </div>
+      <div class="slide-title">One platform. Four teams. Daily intelligence.</div>
+      <div class="slide-sub">Each persona gets a filtered, role-specific signal digest — delivered to Slack every morning before the first call of the day.</div>
+
+      <div class="persona-grid" style="margin-top:28px;">
+        <div class="persona-card">
+          <div class="persona-icon" style="background:rgba(37,99,235,0.08);">
+            <i data-lucide="briefcase" style="width:20px;height:20px;color:#2563eb;"></i>
+          </div>
+          <div class="role">Account Executive</div>
+          <h3>Named Account Surveillance</h3>
+          <ul>
+            <li>Add 10 target accounts — CapitalOne, Citi, Fidelity, Morgan Stanley, Truist</li>
+            <li>Alerts when execs post about SaaS, identity, or AI security</li>
+            <li>Job req detection for buyer-persona titles at target accounts</li>
+            <li>Competitor mentions and partnership signals at named accounts</li>
+          </ul>
+        </div>
+        <div class="persona-card">
+          <div class="persona-icon" style="background:rgba(108,71,245,0.08);">
+            <i data-lucide="handshake" style="width:20px;height:20px;color:var(--accent);"></i>
+          </div>
+          <div class="role">Partner Manager</div>
+          <h3>Partner + Competitive Digest</h3>
+          <ul>
+            <li>Daily brief on what each VAR partner is publishing and announcing</li>
+            <li>Alerts when a partner runs a competitor event or adds a competing vendor</li>
+            <li>Practice area expansion signals — open partner activation lanes</li>
+            <li>Outreach draft ready to send before the competitor gets there first</li>
+          </ul>
+        </div>
+        <div class="persona-card">
+          <div class="persona-icon" style="background:rgba(5,150,105,0.08);">
+            <i data-lucide="megaphone" style="width:20px;height:20px;color:var(--green);"></i>
+          </div>
+          <div class="role">Marketing Manager</div>
+          <h3>Market Narrative Alerts</h3>
+          <ul>
+            <li>When a competitor publishes a positioning piece, get 48-hour response window</li>
+            <li>Dark Reading, SC Media, VentureBeat — monitored daily for category coverage gaps</li>
+            <li>Gartner and Forrester signals flagged for AR team</li>
+            <li>Keyword velocity tracking — catch emerging narratives early</li>
+          </ul>
+        </div>
+        <div class="persona-card">
+          <div class="persona-icon" style="background:rgba(217,119,6,0.08);">
+            <i data-lucide="bar-chart-2" style="width:20px;height:20px;color:var(--amber);"></i>
+          </div>
+          <div class="role">Channel Chief / VP</div>
+          <h3>Weekly Executive Roll-Up</h3>
+          <ul>
+            <li>Top 3 signals requiring action this week — with recommended owner</li>
+            <li>Ecosystem momentum view: which pillars are heating up</li>
+            <li>Partner risk flags: where a competitor is gaining ground in your channel</li>
+            <li>Exportable digest for leadership review and QBR prep</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: IN PRACTICE — AE -->
+  <div class="slide" id="slide-5">
+    <div class="slide-inner">
+      <div class="slide-label" style="color:#60a5fa;">
+        <i data-lucide="briefcase" style="width:13px;height:13px;"></i>
+        In Practice · Account Executive
+      </div>
+      <div class="slide-title" style="font-size:36px;">10 accounts. No Googling. One Slack message.</div>
+      <div class="slide-sub" style="font-size:15px;">Add your named accounts once. Every morning, you know exactly which account to call first — and why.</div>
+
+      <div class="watchlist-row">
+        <span class="account-chip">CapitalOne</span>
+        <span class="account-chip">Citi</span>
+        <span class="account-chip">Morgan Stanley</span>
+        <span class="account-chip">Truist</span>
+        <span class="account-chip">Fidelity</span>
+        <span class="account-chip">Equifax</span>
+        <span style="font-size:12px;color:rgba(255,255,255,0.2);align-self:center;margin-left:4px;">+ 4 more</span>
+      </div>
+
+      <div class="slack-mock">
+        <div class="slack-header">
+          <span class="slack-hash">#</span>
+          <span class="slack-channel">ae-intel</span>
+          <span class="slack-channel-sub">· 10 accounts monitored · updated 7:02 AM</span>
+        </div>
+        <div class="slack-body-wrap">
+          <div class="slack-msg-row">
+            <div class="slack-avatar">
+              <i data-lucide="radar" style="width:18px;height:18px;color:white;"></i>
+            </div>
+            <div class="slack-msg-content">
+              <div class="slack-sender-row">
+                <span class="slack-sender">Ecosystem Radar</span>
+                <span class="slack-app-badge">APP</span>
+                <span class="slack-ts">Today at 7:02 AM</span>
+              </div>
+              <div class="slack-intro">
+                <strong style="color:white;">Daily Brief · March 13</strong> — 3 signals across your named accounts. 1 requires action today.
+              </div>
+
+              <div class="slack-signal high">
+                <span class="sig-badge high">HIGH</span>
+                <span class="sig-text"><strong>Morgan Stanley</strong> — CISO published a LinkedIn post on SaaS privilege sprawl. References an upcoming audit initiative. Possible active evaluation in motion.</span>
+              </div>
+              <div class="slack-signal medium">
+                <span class="sig-badge medium">MED</span>
+                <span class="sig-text"><strong>Fidelity</strong> — Posted a job req for Director of SaaS Security. Title matches our economic buyer ICP exactly.</span>
+              </div>
+              <div class="slack-signal medium">
+                <span class="sig-badge medium">MED</span>
+                <span class="sig-text"><strong>Truist</strong> — Mentioned "service partner" and "reseller" alongside identity and cloud security vendors in two press items this week.</span>
+              </div>
+
+              <div class="slack-footer">Ecosystem Radar · Obsidian Security Partnerships · <em>Reply with a question to query your watchlist</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: IMPACT / ROI -->
+  <div class="slide" id="slide-6">
+    <div class="slide-inner">
+      <div class="slide-label" style="color:var(--green);">
+        <i data-lucide="trending-up" style="width:13px;height:13px;"></i>
+        Impact &amp; ROI
+      </div>
+      <div class="slide-title" style="color:white;">Built in a weekend. Saves the equivalent of a headcount.</div>
+      <div class="slide-sub">The math is simple. The hours are real. The tools it replaces cost more than the entire sales team's Anthropic API bill for a year.</div>
+
+      <div class="impact-grid" style="margin-top:32px;">
+        <div class="impact-stat">
+          <div class="big-num">80+</div>
+          <div class="stat-label">Hours saved per month</div>
+          <div class="stat-note">Based on 4 team members × 5 hrs/week of manual competitor and partner research — eliminated by automated daily runs.</div>
+        </div>
+        <div class="impact-stat">
+          <div class="big-num">$0.50</div>
+          <div class="stat-label">Cost per full pipeline run</div>
+          <div class="stat-note">Claude Haiku pre-filters cheaply. Sonnet interprets only relevant pages. A full 47-page scan costs under $0.50 in API tokens.</div>
+        </div>
+        <div class="impact-stat">
+          <div class="big-num">48hrs</div>
+          <div class="stat-label">Faster competitive response</div>
+          <div class="stat-note">Partner outreach drafts are generated alongside every HIGH signal. No brief needed. No waiting for PMM. Act the same day.</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 4px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">Tools replaced or augmented</div>
+        <div class="tools-row">
+          <div class="tool-chip replaced">
+            <i data-lucide="x-circle" style="width:18px;height:18px;"></i>
+            <div class="chip-text">
+              <span class="chip-label">LinkedIn Sales Navigator</span>
+              <span class="chip-cost">$100/seat/month — generic, no SaaS lens</span>
+            </div>
+          </div>
+          <div class="vs-divider">+</div>
+          <div class="tool-chip replaced">
+            <i data-lucide="x-circle" style="width:18px;height:18px;"></i>
+            <div class="chip-text">
+              <span class="chip-label">Klue / Crayon</span>
+              <span class="chip-cost">$40K–$80K/year — not partner-motion aware</span>
+            </div>
+          </div>
+          <div class="vs-divider">+</div>
+          <div class="tool-chip replaced">
+            <i data-lucide="x-circle" style="width:18px;height:18px;"></i>
+            <div class="chip-text">
+              <span class="chip-label">Manual research hours</span>
+              <span class="chip-cost">80+ hrs/month at fully-loaded cost</span>
+            </div>
+          </div>
+          <div class="vs-divider">=</div>
+          <div class="tool-chip ours">
+            <i data-lucide="radar" style="width:18px;height:18px;"></i>
+            <div class="chip-text">
+              <span class="chip-label">Ecosystem Radar</span>
+              <span class="chip-cost">~$15/month in API · Built for Obsidian's GTM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: COMPETITIVE LANDSCAPE -->
+  <div class="slide" id="slide-7">
+    <div class="slide-inner">
+      <div class="slide-label" style="color:var(--amber);">
+        <i data-lucide="layout-grid" style="width:13px;height:13px;"></i>
+        Competitive Landscape
+      </div>
+      <div class="slide-title">Every alternative is either too expensive, too generic, or both.</div>
+      <div class="slide-sub">None of them were built for the SaaS security partner motion — or know what Falcon Shield, SSPM, or Obsidian's GTM pillars mean.</div>
+
+      <div class="comp-grid">
+
+        <div class="comp-card">
+          <div class="comp-category">Competitive Intelligence</div>
+          <div class="comp-name">Klue</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $40K–$80K / year
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No partner/VAR channel awareness</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Generic battlecards — not SaaS security-specific</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No account-level signal detection</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No partner outreach drafts</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">Competitive Intelligence</div>
+          <div class="comp-name">Crayon</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $30K–$60K / year
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Broad market monitoring, not GTM-specific</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Signals not filtered by pillar or partner</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No Slack-native partner activation workflow</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No action layer — just data</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">Intent Data</div>
+          <div class="comp-name">Bombora</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $30K+ / year
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Account intent only — no competitor signals</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No partner ecosystem intelligence</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Topic categories too broad for SaaS security</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Requires Salesforce/HubSpot to activate</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">News Intelligence API</div>
+          <div class="comp-name">Perigon</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $500–$2K / month
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Media coverage only — no partner/VAR layer</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>API-only — requires engineering to deploy</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No GTM interpretation or signal scoring</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No outreach generation or activation layer</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">News Aggregation + AI</div>
+          <div class="comp-name">Feedly Leo</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $18–$50 / seat / month
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>RSS reader with AI filtering — not GTM-aware</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No partner channel context</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No prioritization by business urgency</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No action or outreach layer</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">Media Monitoring</div>
+          <div class="comp-name">Meltwater</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $20K+ / year
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>PR/brand monitoring — wrong use case entirely</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No sales or partner motion awareness</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Volume of noise is high, signal quality low</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Expensive for a team of 4</li>
+          </ul>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-category">Prospecting + Intent</div>
+          <div class="comp-name">LinkedIn Sales Nav</div>
+          <div class="comp-price expensive">
+            <i data-lucide="dollar-sign" style="width:11px;height:11px;"></i>
+            $100 / seat / month
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>Manual — you still have to do the searching</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No competitor or partner page monitoring</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No signal scoring or GTM interpretation</li>
+            <li><i data-lucide="x" style="width:11px;height:11px;color:var(--red);"></i>No outreach drafts or activation layer</li>
+          </ul>
+        </div>
+
+        <div class="comp-card ours">
+          <div class="ours-badge">This project</div>
+          <div class="comp-category">GTM Intelligence · Built for Obsidian</div>
+          <div class="comp-name">Ecosystem Radar</div>
+          <div class="comp-price ours-price">
+            <i data-lucide="zap" style="width:11px;height:11px;"></i>
+            ~$15 / month in API costs
+          </div>
+          <ul class="comp-gaps">
+            <li><i data-lucide="check" style="width:11px;height:11px;"></i>Filtered through Obsidian's 3 GTM pillars</li>
+            <li><i data-lucide="check" style="width:11px;height:11px;"></i>Partner + competitor + account + media — all in one</li>
+            <li><i data-lucide="check" style="width:11px;height:11px;"></i>Every signal scored and paired with a next action</li>
+            <li><i data-lucide="check" style="width:11px;height:11px;"></i>Ready-to-send partner outreach draft, every time</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <div class="nav-brand">
+    <i data-lucide="radar" style="width:14px;height:14px;"></i>
+    Ecosystem Radar · Obsidian Security
+  </div>
+  <div class="nav-controls">
+    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>
+      <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+    </button>
+    <div class="nav-dots" id="nav-dots"></div>
+    <span class="slide-counter" id="slide-counter">1 / 5</span>
+    <button class="nav-btn" id="btn-next" onclick="navigate(1)">
+      <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 7;
+  let current = 0;
+  let animating = false;
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsContainer = document.getElementById('nav-dots');
+  const counter = document.getElementById('slide-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(index) {
+    if (animating || index === current) return;
+    animating = true;
+
+    const dir    = index > current ? 1 : -1;
+    const prev   = slides[current];
+    const next   = slides[index];
+    current      = index;
+
+    // 1. Position incoming slide off-screen with no transition
+    next.style.transition = 'none';
+    next.style.transform  = `translateX(${dir * 100}%)`;
+    next.style.opacity    = '0';
+    next.classList.add('active');
+
+    // 2. Force reflow so browser registers the off-screen position
+    next.offsetHeight; // eslint-disable-line no-unused-expressions
+
+    // 3. Re-enable transitions and animate both slides
+    next.style.transition = '';
+    next.style.transform  = 'translateX(0)';
+    next.style.opacity    = '1';
+
+    prev.style.transform  = `translateX(${-dir * 100}%)`;
+    prev.style.opacity    = '0';
+
+    setTimeout(() => {
+      prev.classList.remove('active');
+      prev.style.transform = '';
+      prev.style.opacity   = '';
+      next.style.transform = '';
+      next.style.opacity   = '';
+      animating = false;
+      lucide.createIcons();
+    }, 370);
+
+    updateUI();
+  }
+
+  function navigate(dir) { goTo(current + dir); }
+
+  function updateUI() {
+    counter.textContent = `${current + 1} / ${TOTAL}`;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === TOTAL - 1;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+  });
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    updateUI();
+  });
+</script>
+</body>
+</html>

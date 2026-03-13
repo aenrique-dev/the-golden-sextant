@@ -125,6 +125,61 @@ Edit `config/watchlist.json` to:
 
 ---
 
+## Deployment
+
+The pipeline is a Python script designed to run on a schedule and write digest JSON to object storage. The UI fetches the latest digest from a public URL.
+
+### Recommended: GitLab CI + Cloudflare R2
+
+**How it works:**
+1. GitLab scheduled pipeline runs `python run.py` daily (e.g. 7am)
+2. Output JSON is uploaded to a Cloudflare R2 bucket
+3. `radar-ui.html` fetches the digest from the R2 public URL
+
+**`.gitlab-ci.yml` skeleton:**
+```yaml
+radar-daily-run:
+  image: python:3.11-slim
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - pip install -r requirements.txt
+    - python run.py --formats json
+    - |
+      curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets/$R2_BUCKET/objects/demo-digest.json" \
+        -H "Authorization: Bearer $CF_API_TOKEN" \
+        -H "Content-Type: application/json" \
+        --data-binary @data/digests/$(ls -t data/digests/*.json | head -1)
+  variables:
+    ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
+    CF_API_TOKEN: $CF_API_TOKEN
+    CF_ACCOUNT_ID: $CF_ACCOUNT_ID
+    R2_BUCKET: "partnership-protocol"
+```
+
+**Required CI/CD variables** (set in GitLab → Settings → CI/CD → Variables):
+- `ANTHROPIC_API_KEY` — Anthropic API key
+- `CF_API_TOKEN` — Cloudflare API token with R2 write access
+- `CF_ACCOUNT_ID` — Cloudflare account ID
+- `R2_BUCKET` — R2 bucket name
+
+**Then update the UI** to fetch from R2 instead of local file:
+```javascript
+// In radar-ui.html, replace the demo fetch URL:
+fetch('https://pub-xxxx.r2.dev/demo-digest.json')
+```
+
+### Alternatives
+
+| Option | Notes |
+|--------|-------|
+| **GitHub Actions + S3** | Same pattern, swap GitLab CI for GH Actions and R2 for S3 |
+| **AWS Lambda** | Works but 15min timeout is tight for large watchlists |
+| **Modal.com** | Best pure-Python serverless option — native cron, no timeout issues |
+| **Local cron** | `crontab -e` → `0 7 * * * cd /path && python run.py` — simplest of all |
+
+---
+
 ## Roadmap
 
 | Phase | Feature |

@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ecosystem Radar — Obsidian Security</title>
+  <title>The Partnership Protocol — Obsidian Security</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     :root {
-      --bg:       #0b0c10;
-      --surface:  #13141a;
-      --card:     #1a1c24;
-      --border:   #2a2d3a;
-      --accent:   #7c5cfc;
-      --accent2:  #a78bfa;
-      --green:    #34d399;
-      --amber:    #fbbf24;
-      --red:      #f87171;
-      --blue:     #60a5fa;
-      --pink:     #f472b6;
-      --teal:     #2dd4bf;
-      --text:     #e8eaf0;
-      --muted:    #8b8fa8;
-      --tag-bg:   rgba(124,92,252,0.15);
+      --bg:       #f5f6fa;
+      --surface:  #ffffff;
+      --card:     #ffffff;
+      --border:   #e2e4ec;
+      --accent:   #6c47f5;
+      --accent2:  #7c5cfc;
+      --green:    #059669;
+      --amber:    #d97706;
+      --red:      #dc2626;
+      --blue:     #2563eb;
+      --pink:     #db2777;
+      --teal:     #0d9488;
+      --text:     #111827;
+      --muted:    #6b7280;
+      --tag-bg:   rgba(108,71,245,0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +39,7 @@
 
     /* ── HEADER ── */
     header {
-      background: linear-gradient(135deg, #0f0f1a 0%, #1a1030 50%, #0f0f1a 100%);
+      background: linear-gradient(135deg, #f0eeff 0%, #ebe5ff 50%, #f0eeff 100%);
       border-bottom: 1px solid var(--border);
       padding: 28px 40px;
       display: flex;
@@ -159,6 +160,38 @@
     .cov-item { font-size: 12px; }
     .cov-item span { color: var(--accent2); font-weight: 700; margin-right: 4px; }
 
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;
+      margin-bottom: 18px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border); background: white; color: var(--muted);
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chip.active {
+      background: var(--accent); border-color: var(--accent);
+      color: white; font-weight: 600;
+    }
+    .chip.active-pillar-sspm          { background: #2563eb; border-color: #2563eb; color: white; }
+    .chip.active-pillar-agentic-ai    { background: #7c3aed; border-color: #7c3aed; color: white; }
+    .chip.active-pillar-saas-supply   { background: #0d9488; border-color: #0d9488; color: white; }
+    .filter-count {
+      font-size: 11px; color: var(--muted); align-self: flex-end;
+      margin-left: auto; padding-bottom: 2px;
+    }
+
     /* ── SIGNAL CARDS ── */
     .signals-grid { display: grid; gap: 14px; }
     .signal-card {
@@ -168,6 +201,18 @@
     .signal-card.priority-high { border-left-color: var(--red); }
     .signal-card.priority-medium { border-left-color: var(--amber); }
     .signal-card.priority-low { border-left-color: var(--border); }
+    .signal-card.target-account {
+      border-left-color: var(--green);
+      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 60%);
+    }
+    .target-account-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(5,150,105,0.1); color: var(--green);
+      border: 1px solid rgba(5,150,105,0.25);
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; padding: 3px 8px; border-radius: 12px;
+      margin-bottom: 8px; width: fit-content;
+    }
 
     .signal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
     .signal-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
@@ -196,7 +241,7 @@
 
     .action-box {
       margin-top: 12px; padding: 12px 14px;
-      background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.18);
+      background: rgba(5,150,105,0.05); border: 1px solid rgba(5,150,105,0.2);
       border-radius: 8px;
     }
     .action-label {
@@ -207,11 +252,22 @@
     .action-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
     .action-meta strong { color: var(--text); }
     .outreach-draft {
-      margin-top: 8px; padding: 8px 12px;
-      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
-      font-size: 12px; color: var(--muted); font-style: italic; line-height: 1.6;
+      margin-top: 8px; padding: 10px 12px;
+      background: #fafafa; border: 1px solid var(--border); border-radius: 6px;
+      font-size: 13px; color: var(--text); line-height: 1.65;
     }
-    .outreach-label { font-style: normal; font-weight: 700; color: var(--accent2); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+    .outreach-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .outreach-label { font-weight: 700; color: var(--accent2); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 4px; }
+    .outreach-text { color: var(--text); }
+    .copy-btn {
+      display: flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
+      background: white; cursor: pointer; font-size: 11px; font-weight: 500;
+      color: var(--muted); transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+    .copy-btn svg { width: 12px; height: 12px; }
 
     /* ── EXPORT BAR ── */
     #export-card { display: none; }
@@ -222,7 +278,7 @@
     .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
     .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
     .error-banner {
-      background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.2);
       border-radius: 8px; padding: 12px 16px; color: var(--red); font-size: 13px;
     }
 
@@ -247,11 +303,11 @@
 
 <header>
   <div class="header-left">
-    <h1>Ecosystem <span>Radar</span></h1>
+    <h1>The Partnership <span>Protocol</span></h1>
     <p>Partner Signal-to-Pipeline · Obsidian Security</p>
   </div>
   <div class="header-badges">
-    <span class="badge badge-purple">🛰 Partnership Intelligence</span>
+    <span class="badge badge-purple"><i data-lucide="radar" style="width:12px;height:12px;vertical-align:middle;margin-right:4px;"></i>Partnership Intelligence</span>
     <span class="badge badge-green" id="status-badge">● Ready</span>
   </div>
 </header>
@@ -275,13 +331,39 @@
       <button class="btn btn-danger" onclick="clearKey()">Remove Key</button>
     </div>
     <p class="key-note">Your key is stored in localStorage — it stays in this browser only.</p>
+    <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
+      <button class="btn btn-green" onclick="loadDemoData()">▶ Load Demo Data</button>
+      <span style="font-size:12px; color:var(--muted); margin-left:10px;">No API key needed — loads a real saved digest</span>
+    </div>
+  </div>
+
+  <!-- ROADMAP / PLANNED INTEGRATIONS -->
+  <div class="card" style="border-color: rgba(108,71,245,0.2); background: rgba(108,71,245,0.03);">
+    <div class="card-title"><span class="dot"></span>Planned Integrations</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+      <div style="flex:1; min-width:220px; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:12px; font-weight:700; color:var(--accent2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">🔗 LinkedIn Sales Navigator</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:4px; font-weight:500;">Partner rep activity monitoring</div>
+        <div style="font-size:12px; color:var(--muted);">Track posts and signals from named contacts at Optiv, GuidePoint, WWT and other VAR partners — surface deal signals before they go cold.</div>
+      </div>
+      <div style="flex:1; min-width:220px; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:12px; font-weight:700; color:var(--accent2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">📡 Slack / Teams Webhook</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:4px; font-weight:500;">Push digest to #partnerships channel</div>
+        <div style="font-size:12px; color:var(--muted);">Automatically post the daily signal digest to Slack or Teams so the whole GTM team stays aligned without logging in.</div>
+      </div>
+      <div style="flex:1; min-width:220px; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:12px; font-weight:700; color:var(--accent2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">☁️ Salesforce / HubSpot</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:4px; font-weight:500;">Log signals as CRM activities</div>
+        <div style="font-size:12px; color:var(--muted);">Write high-priority signals directly to partner account records in SFDC — creating tasks and notes for AEs automatically.</div>
+      </div>
+    </div>
   </div>
 
   <!-- RUN CONTROLS -->
   <div class="card" id="controls-card">
     <div class="card-title"><span class="dot"></span>Run Radar</div>
     <div class="controls-row">
-      <button class="btn btn-primary" id="run-btn" onclick="runFullRadar()">🛰 Run Full Radar</button>
+      <button class="btn btn-primary" id="run-btn" onclick="runFullRadar()"><i data-lucide="radar" style="width:14px;height:14px;vertical-align:middle;margin-right:6px;"></i>Run Full Radar</button>
       <div class="divider"></div>
       <input class="spot-input" id="spot-url" type="url" placeholder="Spot check — paste any URL…" />
       <button class="btn btn-secondary" id="spot-btn" onclick="runSpotCheck()">Check URL</button>
@@ -305,6 +387,17 @@
   <div class="card" id="results-card">
     <div class="card-title"><span class="dot"></span>Signal Digest</div>
     <div class="digest-summary" id="digest-summary"></div>
+    <div class="filter-bar" id="filter-bar">
+      <div class="filter-group">
+        <div class="filter-label"><i data-lucide="layers" style="width:11px;height:11px;"></i>Pillar</div>
+        <div class="filter-chips" id="filter-pillars"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label"><i data-lucide="building-2" style="width:11px;height:11px;"></i>Source</div>
+        <div class="filter-chips" id="filter-companies"></div>
+      </div>
+      <div class="filter-count" id="filter-count"></div>
+    </div>
     <div class="signals-grid" id="signals-grid"></div>
   </div>
 
@@ -312,9 +405,9 @@
   <div class="card" id="export-card">
     <div class="card-title"><span class="dot"></span>Export</div>
     <div class="export-row">
-      <button class="btn btn-secondary" onclick="window.print()">🖨 Export PDF</button>
-      <button class="btn btn-secondary" onclick="downloadMarkdown()">⬇ Download .md</button>
-      <button class="btn btn-secondary" onclick="copySlack()">💬 Copy Slack Summary</button>
+      <button class="btn btn-secondary" onclick="window.print()"><i data-lucide="printer" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Export PDF</button>
+      <button class="btn btn-secondary" onclick="downloadMarkdown()"><i data-lucide="download" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Download .md</button>
+      <button class="btn btn-secondary" onclick="copySlack()"><i data-lucide="message-square" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Copy Slack Summary</button>
       <span class="export-note" id="export-note"></span>
     </div>
   </div>
@@ -415,6 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showKeySet();
   }
   updateWatchlistSummary();
+  lucide.createIcons();
 });
 
 function updateWatchlistSummary() {
@@ -647,11 +741,22 @@ function signalTypeLabel(t) {
     competitor_move: 'Competitor Move', partner_announcement: 'Partner Announcement',
     tech_integration: 'Tech Integration', marketplace_listing: 'Marketplace Listing',
     joint_customer_story: 'Customer Story', webinar_event: 'Event / Webinar',
-    mssp_motion: 'MSSP Motion', category_trend: 'Market Trend'
+    mssp_motion: 'MSSP Motion', category_trend: 'Market Trend',
+    market_trend: 'Market Trend', partner_move: 'Partner Move',
+    product_launch: 'Product Launch', buying_signal: 'Buying Signal',
+    executive_signal: 'Executive Signal', sales_enablement: 'Sales Enablement',
+    account_activation: 'Account Activation'
   }[t] || t;
 }
 
-function priorityEmoji(p) { return { high: '🔴', medium: '🟡', low: '⚪' }[p] || '⚪'; }
+function priorityIcon(p) {
+  const icons = {
+    high:   `<i data-lucide="alert-circle" style="width:14px;height:14px;color:var(--red);vertical-align:middle;margin-right:4px;flex-shrink:0;"></i>`,
+    medium: `<i data-lucide="alert-triangle" style="width:14px;height:14px;color:var(--amber);vertical-align:middle;margin-right:4px;flex-shrink:0;"></i>`,
+    low:    `<i data-lucide="circle" style="width:14px;height:14px;color:var(--muted);vertical-align:middle;margin-right:4px;flex-shrink:0;"></i>`
+  };
+  return icons[p] || icons.low;
+}
 
 function renderResults(digest) {
   // Summary
@@ -670,22 +775,31 @@ function renderResults(digest) {
   const grid = document.getElementById('signals-grid');
   grid.innerHTML = '';
 
-  const signals = (digest.signals || []).sort((a,b) => (b.priority_score||0) - (a.priority_score||0));
+  const signals = (digest.signals || []).sort((a,b) => {
+    const da = a.signal_date ? new Date(a.signal_date) : null;
+    const db = b.signal_date ? new Date(b.signal_date) : null;
+    if (da && db) return db - da;
+    if (da) return -1;
+    if (db) return 1;
+    return (b.priority_score||0) - (a.priority_score||0);
+  });
 
   if (signals.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><div class="icon">🛰</div>No signals found in this scan. Try again later or spot-check a specific URL.</div>`;
+    grid.innerHTML = `<div class="empty-state"><div class="icon"><i data-lucide="radar" style="width:32px;height:32px;color:var(--muted);"></i></div>No signals found in this scan. Try again later or spot-check a specific URL.</div>`;
   } else {
     signals.forEach((s, i) => {
       const card = document.createElement('div');
-      card.className = `signal-card priority-${s.priority}`;
+      card.className = `signal-card priority-${s.priority}${s.target_account ? ' target-account' : ''}`;
       card.innerHTML = `
+        ${s.target_account ? `<div class="target-account-badge"><i data-lucide="building-2" style="width:10px;height:10px;"></i>Target Account — ${escHtml(s.target_account)}</div>` : ''}
         <div class="signal-header">
-          <div class="signal-title">${priorityEmoji(s.priority)} ${i+1}. ${escHtml(s.title)}</div>
+          <div class="signal-title">${priorityIcon(s.priority)}${i+1}. ${escHtml(s.title)}</div>
           <span class="priority-badge priority-${s.priority}">${(s.priority||'').toUpperCase()}</span>
         </div>
         <div class="signal-tags">
           <span class="tag">${signalTypeLabel(s.signal_type)}</span>
           <span class="tag tag-company">${escHtml(s.company)}</span>
+          ${s.signal_date ? `<span class="tag" style="color:var(--muted);display:inline-flex;align-items:center;gap:3px;"><i data-lucide="calendar" style="width:11px;height:11px;"></i>${escHtml(s.signal_date)}</span>` : ''}
           ${s.affected_segment ? `<span class="tag tag-segment">${escHtml(s.affected_segment)}</span>` : ''}
           ${s.related_partner ? `<span class="tag">${escHtml(s.related_partner)}</span>` : ''}
         </div>
@@ -696,7 +810,7 @@ function renderResults(digest) {
         </div>
         ${s.action_description ? `
         <div class="action-box">
-          <div class="action-label">✅ Recommended Action</div>
+          <div class="action-label"><i data-lucide="check-circle" style="width:12px;height:12px;vertical-align:middle;margin-right:4px;"></i>Recommended Action</div>
           <div class="action-desc">${escHtml(s.action_description)}</div>
           <div class="action-meta">
             <div>Owner: <strong>${escHtml(s.suggested_owner||'')}</strong></div>
@@ -705,8 +819,13 @@ function renderResults(digest) {
           </div>
           ${s.outreach_draft ? `
           <div class="outreach-draft">
-            <span class="outreach-label">Partner outreach draft</span>
-            ${escHtml(s.outreach_draft)}
+            <div class="outreach-header">
+              <span class="outreach-label"><i data-lucide="mail" style="width:11px;height:11px;"></i>Partner outreach draft</span>
+              <button class="copy-btn" onclick="copyOutreach(this, \`${s.outreach_draft.replace(/`/g,"'")}\`)">
+                <i data-lucide="copy" style="width:12px;height:12px;"></i>Copy
+              </button>
+            </div>
+            <div class="outreach-text">${escHtml(s.outreach_draft)}</div>
           </div>` : ''}
         </div>` : ''}`;
       grid.appendChild(card);
@@ -717,7 +836,118 @@ function renderResults(digest) {
   document.getElementById('export-card').style.display = 'block';
   const dateStr = new Date(digest.run_date).toISOString().slice(0,10);
   document.getElementById('export-note').textContent = `Digest from ${dateStr} · ${signals.length} signals`;
+  buildFilters(signals);
   document.getElementById('results-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  lucide.createIcons();
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+let activeFilters = { pillar: 'all', company: 'all' };
+
+const PILLAR_META = {
+  'SSPM':              { label: 'SSPM',             icon: 'shield-check', color: '#2563eb' },
+  'Agentic AI':        { label: 'Agentic AI',       icon: 'bot',          color: '#7c3aed' },
+  'SaaS Supply Chain': { label: 'SaaS Supply Chain',icon: 'link-2',       color: '#0d9488' },
+};
+
+function buildFilters(signals) {
+  const pillars   = [...new Set(signals.map(s => s.pillar).filter(Boolean))];
+  const companies = [...new Set(signals.map(s => s.company).filter(Boolean))];
+
+  const pillarEl   = document.getElementById('filter-pillars');
+  const companyEl  = document.getElementById('filter-companies');
+  activeFilters    = { pillar: 'all', company: 'all' };
+
+  pillarEl.innerHTML  = '';
+  companyEl.innerHTML = '';
+
+  // All chip
+  pillarEl.appendChild(makeChip('All', 'all', 'pillar', true));
+  pillars.forEach(p => pillarEl.appendChild(makeChip(p, p, 'pillar', false)));
+
+  const hasAccountSignals = signals.some(s => s.target_account);
+  companyEl.appendChild(makeChip('All', 'all', 'company', true));
+  if (hasAccountSignals) companyEl.appendChild(makeChip('Target Accounts', '__accounts__', 'company', false));
+  companies.filter(c => !signals.find(s => s.company === c && s.target_account))
+    .forEach(c => companyEl.appendChild(makeChip(c, c, 'company', false)));
+
+  updateFilterCount(signals);
+  lucide.createIcons();
+}
+
+function makeChip(label, value, group, isActive) {
+  const btn = document.createElement('button');
+  btn.className = 'chip' + (isActive ? ' active' : '');
+  btn.dataset.value = value;
+  btn.dataset.group = group;
+
+  const meta = PILLAR_META[value];
+  if (meta) {
+    btn.innerHTML = `<i data-lucide="${meta.icon}" style="width:11px;height:11px;"></i>${escHtml(label)}`;
+    if (isActive) btn.style.background = meta.color;
+  } else {
+    btn.textContent = label;
+  }
+
+  btn.onclick = () => {
+    const isAlreadyActive = activeFilters[group] === value && value !== 'all';
+    document.querySelectorAll(`.chip[data-group="${group}"]`).forEach(c => {
+      c.classList.remove('active');
+      c.style.background = '';
+    });
+    if (isAlreadyActive) {
+      activeFilters[group] = 'all';
+      document.querySelector(`.chip[data-group="${group}"][data-value="all"]`).classList.add('active');
+    } else {
+      activeFilters[group] = value;
+      btn.classList.add('active');
+      const m = PILLAR_META[value];
+      if (m) btn.style.background = m.color;
+    }
+    applyFilters();
+    lucide.createIcons();
+  };
+  return btn;
+}
+
+function applyFilters() {
+  const cards = document.querySelectorAll('#signals-grid .signal-card');
+  const signals = currentDigest ? currentDigest.signals || [] : [];
+  let visible = 0;
+
+  cards.forEach((card, i) => {
+    const s = signals[i];
+    if (!s) return;
+    const pillarMatch  = activeFilters.pillar  === 'all' || s.pillar  === activeFilters.pillar;
+    const companyMatch = activeFilters.company === 'all'
+      || (activeFilters.company === '__accounts__' ? !!s.target_account : s.company === activeFilters.company);
+    const show = pillarMatch && companyMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  updateFilterCount(signals, visible);
+}
+
+function updateFilterCount(signals, visible) {
+  const el = document.getElementById('filter-count');
+  if (!el) return;
+  const total = signals.length;
+  const shown = visible !== undefined ? visible : total;
+  el.textContent = shown === total ? `${total} signals` : `${shown} of ${total} signals`;
+}
+
+function copyOutreach(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<i data-lucide="check" style="width:12px;height:12px;"></i>Copied`;
+    lucide.createIcons();
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<i data-lucide="copy" style="width:12px;height:12px;"></i>Copy`;
+      lucide.createIcons();
+    }, 2000);
+  });
 }
 
 // ── EXPORT ────────────────────────────────────────────────────────────────────
@@ -726,10 +956,11 @@ function downloadMarkdown() {
   const d = currentDigest;
   const date = new Date(d.run_date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
   const dateSlug = new Date(d.run_date).toISOString().slice(0,10);
-  let md = `# 🛰️ Ecosystem Radar — Daily Digest\n**${date}**\n\n> ${d.digest_summary || ''}\n\n`;
+  let md = `# Ecosystem Radar — Daily Digest\n**${date}**\n\n> ${d.digest_summary || ''}\n\n`;
   md += `**Coverage:** ${d.pages_scanned} pages scanned · ${d.signals_found} signals found\n\n---\n\n`;
-  (d.signals||[]).sort((a,b)=>(b.priority_score||0)-(a.priority_score||0)).forEach((s,i) => {
-    md += `## ${priorityEmoji(s.priority)} ${i+1}. ${s.title}\n`;
+  const priorityLabel = p => ({ high: '[HIGH]', medium: '[MEDIUM]', low: '[LOW]' }[p] || '[LOW]');
+  (d.signals||[]).sort((a,b)=>{const da=a.signal_date?new Date(a.signal_date):null,db=b.signal_date?new Date(b.signal_date):null;if(da&&db)return db-da;if(da)return -1;if(db)return 1;return(b.priority_score||0)-(a.priority_score||0);}).forEach((s,i) => {
+    md += `## ${priorityLabel(s.priority)} ${i+1}. ${s.title}\n`;
     md += `\`${signalTypeLabel(s.signal_type)}\` · **${s.company}** · ${(s.priority||'').toUpperCase()} priority\n\n`;
     md += `**Summary:** ${s.summary}\n\n`;
     md += `**Why it matters:** ${s.why_it_matters}\n\n`;
@@ -737,7 +968,7 @@ function downloadMarkdown() {
     if (s.related_partner)  md += `**Related partner:** ${s.related_partner}\n`;
     md += `**Source:** ${s.source_url}\n\n`;
     if (s.action_description) {
-      md += `### ✅ Recommended Action\n**${s.action_description}**\n`;
+      md += `### Recommended Action\n**${s.action_description}**\n`;
       if (s.suggested_owner)            md += `- Owner: ${s.suggested_owner}\n`;
       if (s.suggested_partners?.length) md += `- Activate: ${s.suggested_partners.join(', ')}\n`;
       if (s.suggested_accounts?.length) md += `- Target accounts: ${s.suggested_accounts.join(', ')}\n`;
@@ -759,7 +990,7 @@ function copySlack() {
   const date = new Date(d.run_date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
   const highs = (d.signals||[]).filter(s=>s.priority==='high');
   const meds  = (d.signals||[]).filter(s=>s.priority==='medium');
-  let msg = `🛰 *Ecosystem Radar — ${date}*\n${d.digest_summary}\n\n`;
+  let msg = `*Ecosystem Radar — ${date}*\n${d.digest_summary}\n\n`;
   if (highs.length) {
     msg += `*🔴 High Priority (${highs.length})*\n`;
     highs.forEach(s => msg += `• *${s.title}* — ${s.why_it_matters}\n`);
@@ -775,6 +1006,61 @@ function copySlack() {
     btn.textContent = '✓ Copied!';
     setTimeout(() => btn.textContent = orig, 2000);
   });
+}
+
+// ── DEMO MODE ─────────────────────────────────────────────────────────────────
+function loadDemoData() {
+  fetch('./data/sample_outputs/demo-digest.json')
+    .then(r => r.json())
+    .then(raw => {
+      const digest = transformDigest(raw);
+      document.getElementById('pipeline-card').style.display = 'none';
+      document.getElementById('status-badge').textContent = '● Demo Mode';
+      currentDigest = digest;
+      renderResults(digest);
+    })
+    .catch(() => {
+      alert('Could not load demo-digest.json.\n\nServe the folder with:\n  python3 -m http.server 8080\n\nThen open http://localhost:8080/radar-ui.html');
+    });
+}
+
+// Transform pipeline JSON schema → UI rendering schema
+function transformDigest(raw) {
+  const signals = (raw.top_entries || []).map(entry => {
+    const s = entry.signal;
+    const a = (entry.actions || [])[0] || {};
+    return {
+      title:             s.title,
+      company:           s.company_name,
+      company_type:      s.company_type,
+      signal_type:       s.signal_type,
+      pillar:            s.pillar || null,
+      signal_date:       s.publish_date || null,
+      target_account:    s.target_account || null,
+      summary:           s.summary,
+      why_it_matters:    s.why_it_matters,
+      related_partner:   s.related_partner,
+      affected_segment:  s.affected_segment,
+      source_url:        s.source_url,
+      priority:          s.priority,
+      priority_score:    s.priority_score,
+      priority_rationale: s.priority_rationale,
+      action_type:       a.action_type,
+      action_description: a.description,
+      suggested_owner:   a.suggested_owner,
+      suggested_partners: a.suggested_partners || [],
+      suggested_accounts: a.suggested_accounts || [],
+      outreach_draft:    a.outreach_draft
+    };
+  });
+  return {
+    run_date:       raw.generated_at,
+    run_label:      raw.run_label || 'Saved Digest',
+    digest_summary: raw.summary_narrative,
+    pages_scanned:  raw.total_pages_scanned,
+    signals_found:  raw.total_signals_found,
+    signals
+  };
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
