@@ -1,0 +1,13 @@
+# Ecosystem Radar — Python dependencies
+# Install with: pip install -r requirements.txt --break-system-packages
+
+# Anthropic SDK — core LLM client
+anthropic>=0.40.0
+
+# Web scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Optional: for nicer local output / scheduling
+# rich>=13.0.0          # pretty terminal output (optional)
+# schedule>=1.2.0       # local cron-like scheduling (optional)

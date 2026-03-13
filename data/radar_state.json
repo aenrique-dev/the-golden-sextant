@@ -1,0 +1,16 @@
+{
+  "seen_signals": {
+    "91181f504d2b03ea": "2026-03-13T14:33:34.369923"
+  },
+  "page_hashes": {
+    "https://appomni.com/blog/new-aws-partnership": "dd1063e5022dd7397d977ef4da2a6b00"
+  },
+  "runs": [
+    {
+      "run_id": "1c76f483",
+      "timestamp": "2026-03-13T14:33:34.369924",
+      "pages_scanned": 1,
+      "signals_found": 1
+    }
+  ]
+}
