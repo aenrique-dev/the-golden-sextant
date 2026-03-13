@@ -5,7 +5,6 @@ images/*.md
 images/Obsidian Mini Brand Guide.png
 
 # Runtime data
-data/digests/
 data/radar_state.json
 
 # Python
