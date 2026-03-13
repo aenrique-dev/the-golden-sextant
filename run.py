@@ -55,7 +55,7 @@ def main():
         "--formats",
         nargs="+",
         default=["markdown", "json"],
-        choices=["markdown", "email", "json", "slack"],
+        choices=["markdown", "email", "json", "slack", "pptx"],
         help="Output formats to write (default: markdown json)"
     )
     parser.add_argument(

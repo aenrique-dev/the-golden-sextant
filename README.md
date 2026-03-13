@@ -1,12 +1,12 @@
-# 🛰️ Ecosystem Radar
+# The Partnership Protocol
 ### Partner Signal-to-Pipeline Agent
-**Team: The Partnership Protocol · Obsidian Security Hackathon 2026**
+**AI Hackathon 2026**
 
 ---
 
 ## What It Does
 
-Ecosystem Radar runs parallel AI research agents across competitor and partner websites, extracts meaningful ecosystem signals, scores them by strategic importance, and generates concrete next actions for the Partnerships team.
+The Partnership Protocol runs parallel AI research agents across competitor and partner websites, extracts meaningful ecosystem signals, scores them by strategic importance, and generates concrete next actions for the Partnerships team.
 
 **Before:** Partner managers manually scan 25+ sources. Most signals get missed. None become pipeline actions.
 
@@ -38,7 +38,7 @@ run.py
 
 ### 1. Install dependencies
 ```bash
-pip install -r requirements.txt --break-system-packages
+pip install -r requirements.txt
 ```
 
 ### 2. Set your API key
@@ -116,7 +116,7 @@ Edit `config/watchlist.json` to:
 
 ## Demo Script (Hackathon)
 
-1. Open `sample_output/example-digest.md` — show the target output
+1. Open `radar-ui.html` — show the live dashboard with real signals
 2. Run `python run.py --dry-run --print markdown` — show the pipeline executing
 3. Walk through the four agent stages: Scout → Interpreter → Ranker → Activator
 4. Point to `config/watchlist.json` — "this is all it needs to get started"
@@ -193,4 +193,4 @@ fetch('https://pub-xxxx.r2.dev/demo-digest.json')
 
 ---
 
-*Built by The Partnership Protocol for the Obsidian Security AI Hackathon 2026.*
+*Built for the AI Hackathon 2026.*

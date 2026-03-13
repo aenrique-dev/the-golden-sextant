@@ -3,29 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ecosystem Radar — Pitch Deck</title>
+  <title>The Partnership Protocol — Pitch Deck</title>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
     :root {
-      --accent:  #6c47f5;
-      --accent2: #7c5cfc;
+      --accent:  #5565E2;   /* Periwinkle — visible on dark navy */
+      --accent2: #61CEF4;   /* Sky Blue — brightest blue, max contrast on dark */
+      --cobalt:  #002594;   /* Cobalt — use on light backgrounds only */
+      --royal:   #0431B6;   /* Royal Blue — use on light backgrounds only */
       --green:   #059669;
-      --amber:   #d97706;
+      --amber:   #FF9D03;   /* Brand Amber */
       --red:     #dc2626;
-      --text:    #111827;
-      --muted:   #6b7280;
-      --border:  #e2e4ec;
-      --bg:      #f5f6fa;
+      --text:    #131313;   /* Brand Black */
+      --muted:   #898989;   /* Mid Gray */
+      --border:  #C4C4C4;   /* Light Gray */
+      --bg:      #F8F8F8;   /* Off White */
       --surface: #ffffff;
+      --navy:    #0B173B;   /* Brand Navy */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #0f0a1e;
+      background: #060d1f;
       color: var(--text);
       height: 100vh;
       overflow: hidden;
@@ -56,7 +59,7 @@
 
     /* ── NAV BAR ── */
     .nav-bar {
-      background: #0f0a1e;
+      background: #060d1f;
       border-top: 1px solid rgba(255,255,255,0.08);
       display: flex;
       align-items: center;
@@ -65,16 +68,21 @@
       flex-shrink: 0;
     }
     .nav-brand {
-      font-size: 13px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
-    .nav-brand i { color: var(--accent2); }
+    .nav-brand img { height: 20px; width: auto; opacity: 0.75; }
+    .nav-brand-sep {
+      width: 1px; height: 16px;
+      background: rgba(255,255,255,0.15);
+    }
+    .nav-brand-label {
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
     .nav-controls { display: flex; align-items: center; gap: 16px; }
     .nav-dots { display: flex; gap: 8px; }
     .dot {
@@ -95,7 +103,7 @@
       display: flex; align-items: center; justify-content: center;
       transition: all 0.15s;
     }
-    .nav-btn:hover { background: rgba(108,71,245,0.3); border-color: var(--accent2); color: white; }
+    .nav-btn:hover { background: rgba(4,49,182,0.3); border-color: var(--accent2); color: white; }
     .nav-btn:disabled { opacity: 0.25; cursor: default; }
     .slide-counter {
       font-size: 12px;
@@ -104,6 +112,15 @@
       min-width: 40px;
       text-align: center;
     }
+
+    /* ── SLIDE LOGO (top-right) ── */
+    .slide-logo {
+      position: absolute;
+      top: 28px;
+      right: 40px;
+      z-index: 10;
+    }
+    .slide-logo img { height: 22px; width: auto; }
 
     /* ── SHARED SLIDE LAYOUT ── */
     .slide-inner {
@@ -139,7 +156,7 @@
 
     /* ── SLIDE 1: TITLE ── */
     #slide-1 {
-      background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%);
+      background: linear-gradient(145deg, #060d1f 0%, #0B173B 50%, #060d1f 100%);
     }
     #slide-1 .slide-inner {
       justify-content: center;
@@ -163,8 +180,8 @@
     .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }
     .hero-tag {
       padding: 6px 14px; border-radius: 20px;
-      border: 1px solid rgba(108,71,245,0.4);
-      background: rgba(108,71,245,0.1);
+      border: 1px solid rgba(4,49,182,0.4);
+      background: rgba(4,49,182,0.1);
       font-size: 12px; font-weight: 600; color: var(--accent2);
       letter-spacing: 0.02em;
     }
@@ -210,7 +227,7 @@
     }
 
     /* ── SLIDE 3: HOW IT WORKS ── */
-    #slide-3 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
+    #slide-3 { background: linear-gradient(145deg, #060d1f 0%, #0B173B 50%, #060d1f 100%); }
     #slide-3 .slide-label { color: var(--accent2); }
     #slide-3 .slide-title { color: white; }
     #slide-3 .slide-sub { color: rgba(255,255,255,0.5); margin-bottom: 40px; }
@@ -249,25 +266,25 @@
     .pillar-chip {
       flex: 1; padding: 14px 18px;
       border-radius: 10px;
-      border: 1px solid rgba(108,71,245,0.3);
-      background: rgba(108,71,245,0.08);
+      border: 1px solid rgba(4,49,182,0.3);
+      background: rgba(4,49,182,0.08);
       display: flex; align-items: center; gap: 10px;
     }
     .pillar-chip span { font-size: 13px; font-weight: 600; color: white; }
     .pillar-chip i { color: var(--accent2); flex-shrink: 0; }
 
     /* ── SLIDE 4: IN PRACTICE — AE ── */
-    #slide-5 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
-    #slide-5 .slide-label { color: #60a5fa; }
+    #slide-5 { background: linear-gradient(145deg, #060d1f 0%, #0B173B 50%, #060d1f 100%); }
+    #slide-5 .slide-label { color: #61CEF4; }
     #slide-5 .slide-title { color: white; }
     #slide-5 .slide-sub   { color: rgba(255,255,255,0.5); margin-bottom: 20px; }
 
     .watchlist-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
     .account-chip {
       padding: 5px 12px; border-radius: 20px;
-      border: 1px solid rgba(96,165,250,0.3);
-      background: rgba(96,165,250,0.07);
-      font-size: 12px; font-weight: 600; color: #93c5fd;
+      border: 1px solid rgba(97,206,244,0.3);
+      background: rgba(97,206,244,0.07);
+      font-size: 12px; font-weight: 600; color: #61CEF4;
     }
 
     .slack-mock {
@@ -367,7 +384,7 @@
     }
 
     /* ── SLIDE 6: IMPACT / ROI ── */
-    #slide-6 { background: linear-gradient(145deg, #0f0a1e 0%, #1a0f3c 50%, #0f0a1e 100%); }
+    #slide-6 { background: linear-gradient(145deg, #060d1f 0%, #0B173B 50%, #060d1f 100%); }
     #slide-6 .slide-label { color: var(--green); }
     #slide-6 .slide-title { color: white; }
     #slide-6 .slide-sub { color: rgba(255,255,255,0.5); margin-bottom: 36px; }
@@ -408,8 +425,8 @@
     .tool-chip.replaced .chip-cost { font-size: 11px; color: rgba(220,38,38,0.8); font-weight: 600; }
     .tool-chip.replaced i { color: rgba(220,38,38,0.6); }
     .tool-chip.ours {
-      background: rgba(108,71,245,0.12);
-      border: 1px solid rgba(108,71,245,0.3);
+      background: rgba(4,49,182,0.12);
+      border: 1px solid rgba(4,49,182,0.3);
     }
     .tool-chip.ours .chip-label { color: white; font-size: 13px; font-weight: 700; }
     .tool-chip.ours .chip-cost { font-size: 11px; color: var(--accent2); font-weight: 700; }
@@ -428,6 +445,164 @@
     #slide-7 .slide-title { color: var(--text); }
     #slide-7 .slide-sub   { color: var(--muted); margin-bottom: 28px; }
 
+    /* ── SLIDE 8: ALREADY BUILT ── */
+    #slide-8 { background: linear-gradient(145deg, #060d1f 0%, #0B173B 50%, #060d1f 100%); }
+    #slide-8 .slide-label { color: var(--accent2); }
+    #slide-8 .slide-title { color: white; }
+    #slide-8 .slide-sub   { color: rgba(255,255,255,0.5); margin-bottom: 32px; }
+
+    .built-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+    .built-files {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .built-files-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .built-file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+    }
+    .built-file-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(5,150,105,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .built-file-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #6ee7b7;
+      font-family: 'Courier New', monospace;
+      flex-shrink: 0;
+    }
+    .built-file-desc {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.4);
+    }
+    .built-run-box {
+      margin-top: 4px;
+      background: #0d1117;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .built-run-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .built-run-line {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #6ee7b7;
+      line-height: 1.8;
+    }
+    .built-run-line .dim { color: rgba(255,255,255,0.3); }
+    .built-deploy {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .built-deploy-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .deploy-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .deploy-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      position: relative;
+    }
+    .deploy-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: -8px;
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+    .deploy-step + .deploy-step { margin-top: 16px; }
+    .deploy-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .deploy-icon.sched  { background: rgba(4,49,182,0.25); }
+    .deploy-icon.run    { background: rgba(5,150,105,0.2); }
+    .deploy-icon.store  { background: rgba(97,206,244,0.15); }
+    .deploy-icon.dash   { background: rgba(217,119,6,0.2); }
+    .deploy-step-body { flex: 1; }
+    .deploy-step-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+    .deploy-step-desc {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.4;
+    }
+    .deploy-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .deploy-bullet {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+    .deploy-bullet-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+    }
+
     .comp-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -445,14 +620,14 @@
       position: relative;
     }
     .comp-card.ours {
-      border-color: var(--accent);
-      background: linear-gradient(145deg, #faf8ff, #f3efff);
-      box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(108,71,245,0.12);
+      border-color: #0431B6;
+      background: linear-gradient(145deg, #f5f8ff, #eef2fb);
+      box-shadow: 0 0 0 1px #0431B6, 0 4px 24px rgba(4,49,182,0.12);
     }
     .comp-card .comp-name {
       font-size: 15px; font-weight: 800; color: var(--text);
     }
-    .comp-card.ours .comp-name { color: var(--accent); }
+    .comp-card.ours .comp-name { color: #002594; }
     .comp-card .comp-category {
       font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
@@ -467,7 +642,7 @@
       background: rgba(220,38,38,0.07); color: var(--red);
     }
     .comp-card .comp-price.ours-price {
-      background: rgba(108,71,245,0.1); color: var(--accent);
+      background: rgba(4,49,182,0.1); color: #0431B6;
     }
     .comp-card .comp-gaps {
       list-style: none; display: flex; flex-direction: column; gap: 5px;
@@ -482,7 +657,7 @@
     .comp-card.ours .comp-gaps li i { color: var(--green); }
     .ours-badge {
       position: absolute; top: -1px; right: 16px;
-      background: var(--accent); color: white;
+      background: #0431B6; color: white;
       font-size: 9px; font-weight: 800; letter-spacing: 0.08em;
       text-transform: uppercase; padding: 3px 8px;
       border-radius: 0 0 6px 6px;
@@ -495,10 +670,11 @@
 
   <!-- SLIDE 1: TITLE -->
   <div class="slide active" id="slide-1">
+    <div class="slide-logo"><img src="images/Obsidian Logo - White@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="hero-eyebrow">
-        <i data-lucide="radar" style="width:14px;height:14px;"></i>
-        Obsidian Security · Partnerships · Hackathon 2026
+        <i data-lucide="radar" style="width:13px;height:13px;"></i>
+        Partnerships · Hackathon 2026
       </div>
       <div class="hero-title">Ecosystem<br><span>Radar</span></div>
       <div class="hero-sub">
@@ -513,12 +689,14 @@
       </div>
     </div>
     <div class="hero-byline">
-      Andres Enrique<br>Regional VAR Partner Manager<br>Obsidian Security
+      Andres Enrique<br>Regional VAR Partner Manager<br>
+      <img src="images/Obsidian Logo - White@2x.png" alt="Obsidian Security" style="height:14px;width:auto;opacity:0.4;margin-top:6px;" />
     </div>
   </div>
 
   <!-- SLIDE 2: THE PROBLEM -->
   <div class="slide" id="slide-2">
+    <div class="slide-logo"><img src="images/Obsidian Logo - Black@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="slide-label" style="color:var(--red);">
         <i data-lucide="alert-triangle" style="width:13px;height:13px;"></i>
@@ -562,12 +740,12 @@
           </div>
         </div>
         <div class="problem-card">
-          <div class="icon-wrap" style="background:rgba(108,71,245,0.08);">
+          <div class="icon-wrap" style="background:rgba(4,49,182,0.08);">
             <i data-lucide="users" style="width:20px;height:20px;color:var(--accent);"></i>
           </div>
           <h3>No account-level signal detection</h3>
           <p>When a CISO at CapitalOne posts about SaaS privilege sprawl, or Fidelity posts a Director of SaaS Security job req — that's a live buying signal. Today, nobody sees it unless they happen to be scrolling LinkedIn at the right moment.</p>
-          <div class="stat-pill" style="background:rgba(108,71,245,0.08);color:var(--accent);">
+          <div class="stat-pill" style="background:rgba(4,49,182,0.08);color:var(--accent);">
             <i data-lucide="search-x" style="width:11px;height:11px;"></i>
             Buying signals missed every week
           </div>
@@ -578,6 +756,7 @@
 
   <!-- SLIDE 3: HOW IT WORKS -->
   <div class="slide" id="slide-3">
+    <div class="slide-logo"><img src="images/Obsidian Logo - White@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="slide-label">
         <i data-lucide="cpu" style="width:13px;height:13px;"></i>
@@ -634,6 +813,7 @@
 
   <!-- SLIDE 4: WHO BENEFITS -->
   <div class="slide" id="slide-4">
+    <div class="slide-logo"><img src="images/Obsidian Logo - Black@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="slide-label" style="color:var(--green);">
         <i data-lucide="users" style="width:13px;height:13px;"></i>
@@ -657,7 +837,7 @@
           </ul>
         </div>
         <div class="persona-card">
-          <div class="persona-icon" style="background:rgba(108,71,245,0.08);">
+          <div class="persona-icon" style="background:rgba(4,49,182,0.08);">
             <i data-lucide="handshake" style="width:20px;height:20px;color:var(--accent);"></i>
           </div>
           <div class="role">Partner Manager</div>
@@ -701,8 +881,9 @@
 
   <!-- SLIDE 5: IN PRACTICE — AE -->
   <div class="slide" id="slide-5">
+    <div class="slide-logo"><img src="images/Obsidian Logo - White@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
-      <div class="slide-label" style="color:#60a5fa;">
+      <div class="slide-label" style="color:#61CEF4;">
         <i data-lucide="briefcase" style="width:13px;height:13px;"></i>
         In Practice · Account Executive
       </div>
@@ -763,6 +944,7 @@
 
   <!-- SLIDE 6: IMPACT / ROI -->
   <div class="slide" id="slide-6">
+    <div class="slide-logo"><img src="images/Obsidian Logo - White@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="slide-label" style="color:var(--green);">
         <i data-lucide="trending-up" style="width:13px;height:13px;"></i>
@@ -830,6 +1012,7 @@
 
   <!-- SLIDE 7: COMPETITIVE LANDSCAPE -->
   <div class="slide" id="slide-7">
+    <div class="slide-logo"><img src="images/Obsidian Logo - Black@2x.png" alt="Obsidian" /></div>
     <div class="slide-inner">
       <div class="slide-label" style="color:var(--amber);">
         <i data-lucide="layout-grid" style="width:13px;height:13px;"></i>
@@ -948,7 +1131,7 @@
         <div class="comp-card ours">
           <div class="ours-badge">This project</div>
           <div class="comp-category">GTM Intelligence · Built for Obsidian</div>
-          <div class="comp-name">Ecosystem Radar</div>
+          <div class="comp-name">The Partnership Protocol</div>
           <div class="comp-price ours-price">
             <i data-lucide="zap" style="width:11px;height:11px;"></i>
             ~$15 / month in API costs
@@ -965,13 +1148,137 @@
     </div>
   </div>
 
+  <!-- ── SLIDE 8: ALREADY BUILT ── -->
+  <div class="slide" id="slide-8">
+    <div class="slide-logo"><img src="images/Obsidian Logo - White@2x.png" alt="Obsidian" /></div>
+    <div class="slide-inner">
+      <div class="slide-label">
+        <i data-lucide="rocket" style="width:13px;height:13px;"></i>
+        It's Already Built
+      </div>
+      <div class="slide-title">We just need an API key.</div>
+      <div class="slide-sub">Every file exists. The pipeline runs end-to-end. One credential away from going live.</div>
+
+      <div class="built-grid">
+
+        <!-- Left: file checklist -->
+        <div class="built-files">
+          <div class="built-files-title">What's already in the repo</div>
+
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">run.py</span>
+            <span class="built-file-desc">Entry point — one command to run</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">agents/scout.py</span>
+            <span class="built-file-desc">Fetches all 67 watchlist pages in parallel</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">agents/interpreter.py</span>
+            <span class="built-file-desc">Extracts signals with Claude Haiku</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">agents/ranker.py</span>
+            <span class="built-file-desc">Scores signals by strategic priority</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">agents/activator.py</span>
+            <span class="built-file-desc">Generates actions + outreach with Sonnet</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">config/watchlist.json</span>
+            <span class="built-file-desc">9 competitors · 8 partners · 20+ sources</span>
+          </div>
+          <div class="built-file-row">
+            <div class="built-file-check"><i data-lucide="check" style="width:11px;height:11px;color:#6ee7b7;"></i></div>
+            <span class="built-file-name">radar-ui.html</span>
+            <span class="built-file-desc">Live dashboard, filters, markdown export</span>
+          </div>
+
+          <div class="built-run-box">
+            <div class="built-run-label">To run live</div>
+            <div class="built-run-line"><span class="dim">$</span> export ANTHROPIC_API_KEY=sk-ant-...</div>
+            <div class="built-run-line"><span class="dim">$</span> python run.py</div>
+          </div>
+        </div>
+
+        <!-- Right: deployment flow -->
+        <div class="built-deploy">
+          <div class="built-deploy-title">Production deployment path</div>
+
+          <div class="deploy-flow">
+            <div class="deploy-step">
+              <div class="deploy-icon sched">
+                <i data-lucide="clock" style="width:14px;height:14px;color:#a78bfa;"></i>
+              </div>
+              <div class="deploy-step-body">
+                <div class="deploy-step-name">GitLab CI — Daily Schedule</div>
+                <div class="deploy-step-desc">Triggers at 7am via scheduled pipeline</div>
+              </div>
+            </div>
+            <div class="deploy-step">
+              <div class="deploy-icon run">
+                <i data-lucide="terminal" style="width:14px;height:14px;color:#6ee7b7;"></i>
+              </div>
+              <div class="deploy-step-body">
+                <div class="deploy-step-name">python run.py</div>
+                <div class="deploy-step-desc">Scout → Interpret → Rank → Activate</div>
+              </div>
+            </div>
+            <div class="deploy-step">
+              <div class="deploy-icon store">
+                <i data-lucide="database" style="width:14px;height:14px;color:#61CEF4;"></i>
+              </div>
+              <div class="deploy-step-body">
+                <div class="deploy-step-name">digest.json → Cloudflare R2</div>
+                <div class="deploy-step-desc">Uploaded to object storage, no server needed</div>
+              </div>
+            </div>
+            <div class="deploy-step">
+              <div class="deploy-icon dash">
+                <i data-lucide="layout-dashboard" style="width:14px;height:14px;color:#fcd34d;"></i>
+              </div>
+              <div class="deploy-step-body">
+                <div class="deploy-step-name">Dashboard · Slack · Email</div>
+                <div class="deploy-step-desc">UI fetches from R2 — always shows latest run</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="deploy-bullets">
+            <div class="deploy-bullet">
+              <div class="deploy-bullet-dot"></div>
+              Runs on any schedule — daily, weekly, before a QBR
+            </div>
+            <div class="deploy-bullet">
+              <div class="deploy-bullet-dot"></div>
+              Watchlist is a JSON file — add a competitor in 30 seconds
+            </div>
+            <div class="deploy-bullet">
+              <div class="deploy-bullet-dot"></div>
+              ~$15/month in API costs at current watchlist size
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div><!-- /deck -->
 
 <!-- NAV BAR -->
 <div class="nav-bar">
   <div class="nav-brand">
-    <i data-lucide="radar" style="width:14px;height:14px;"></i>
-    Ecosystem Radar · Obsidian Security
+    <img src="images/Obsidian Logo - White@2x.png" alt="Obsidian Security" />
+    <div class="nav-brand-sep"></div>
+    <span class="nav-brand-label">Ecosystem Radar</span>
   </div>
   <div class="nav-controls">
     <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>
@@ -986,7 +1293,7 @@
 </div>
 
 <script>
-  const TOTAL = 7;
+  const TOTAL = 8;
   let current = 0;
   let animating = false;
 

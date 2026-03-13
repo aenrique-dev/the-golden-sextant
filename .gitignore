@@ -1,23 +1,21 @@
-hackathon.md
+# Brand assets — internal, do not commit to public repos
+images/*.pdf
+images/*.eps
+images/*.md
+images/Obsidian Mini Brand Guide.png
 
-# Internal GTM strategy — not for public repos
-config/watchlist.json
-
-# Runtime data and operational outputs
+# Runtime data
 data/
-
-# Sample outputs with real account/partner framing
-sample_output/
-
-# Claude local settings
-.claude/settings.local.json
-
-# Accidental macOS system bundle
-src/myDocuments.cannedSearch/
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
 .env
-*.env
+
+# macOS
+.DS_Store
+*.cannedSearch
+
+# Claude Code local settings
+.claude/settings.local.json

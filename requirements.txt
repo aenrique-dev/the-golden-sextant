@@ -1,5 +1,5 @@
-# Ecosystem Radar — Python dependencies
-# Install with: pip install -r requirements.txt --break-system-packages
+# The Partnership Protocol — Python dependencies
+# Install with: pip install -r requirements.txt
 
 # Anthropic SDK — core LLM client
 anthropic>=0.40.0
@@ -7,6 +7,9 @@ anthropic>=0.40.0
 # Web scraping
 requests>=2.31.0
 beautifulsoup4>=4.12.0
+
+# PowerPoint output (--formats pptx)
+python-pptx>=0.6.23
 
 # Optional: for nicer local output / scheduling
 # rich>=13.0.0          # pretty terminal output (optional)

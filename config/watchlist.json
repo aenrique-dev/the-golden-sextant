@@ -1,0 +1,381 @@
+{
+  "competitors": [
+    {
+      "name": "AppOmni",
+      "domain": "appomni.com",
+      "pages": [
+        "https://appomni.com/blog/",
+        "https://appomni.com/resources/",
+        "https://appomni.com/partners/"
+      ],
+      "notes": "Primary SSPM competitor — watch for partner announcements, new use case positioning, and marketplace listings"
+    },
+    {
+      "name": "Reco.AI",
+      "domain": "reco.ai",
+      "pages": [
+        "https://www.reco.ai/blog",
+        "https://www.reco.ai/resources"
+      ],
+      "notes": "SaaS identity and integration risk — watch for partner motions and product expansion"
+    },
+    {
+      "name": "CrowdStrike",
+      "domain": "crowdstrike.com",
+      "pages": [
+        "https://www.crowdstrike.com/blog/",
+        "https://www.crowdstrike.com/partners/",
+        "https://www.crowdstrike.com/en-us/news/"
+      ],
+      "notes": "Falcon Shield (formerly Adaptive Shield) — watch for SaaS/identity threat detection positioning and VAR partner announcements"
+    },
+    {
+      "name": "Microsoft Defender",
+      "domain": "microsoft.com",
+      "pages": [
+        "https://www.microsoft.com/en-us/security/blog/",
+        "https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/bg-p/MicrosoftDefenderCloudBlog"
+      ],
+      "notes": "Defender for Cloud Apps / SaaS security — watch for Copilot security and CASB positioning"
+    },
+    {
+      "name": "Grip Security",
+      "domain": "grip.security",
+      "pages": [
+        "https://www.grip.security/blog",
+        "https://www.grip.security/resources"
+      ],
+      "notes": "Shadow SaaS discovery and SaaS identity — watch for partner and marketplace motions"
+    },
+    {
+      "name": "Valence Security",
+      "domain": "valencesecurity.com",
+      "pages": [
+        "https://www.valencesecurity.com/blog",
+        "https://www.valencesecurity.com/resources/"
+      ],
+      "notes": "SaaS-to-SaaS integration risk and OAuth — watch for product and partner announcements"
+    },
+    {
+      "name": "Nudge Security",
+      "domain": "nudgesecurity.com",
+      "pages": [
+        "https://www.nudgesecurity.com/blog",
+        "https://www.nudgesecurity.com/press"
+      ],
+      "notes": "Shadow SaaS discovery and GenAI governance — watch for enterprise push and channel motions"
+    },
+    {
+      "name": "SafeBase / Drata",
+      "domain": "drata.com",
+      "pages": [
+        "https://drata.com/blog",
+        "https://drata.com/partners"
+      ],
+      "notes": "SafeBase acquired by Drata — watch for SaaS compliance and audit positioning overlap"
+    },
+    {
+      "name": "Lumos",
+      "domain": "lumos.com",
+      "pages": [
+        "https://www.lumos.com/blog",
+        "https://www.lumos.com/customers"
+      ],
+      "notes": "Shadow SaaS and identity governance — watch for IGA/IAM expansion and enterprise channel moves"
+    }
+  ],
+  "partners": [
+    {
+      "name": "Optiv",
+      "domain": "optiv.com",
+      "pages": [
+        "https://www.optiv.com/insights",
+        "https://www.optiv.com/partners",
+        "https://www.optiv.com/events"
+      ],
+      "notes": "Tier 1 national VAR — FSI and F500 focus. Watch for new vendor additions, joint events, and co-marketing"
+    },
+    {
+      "name": "GuidePoint Security",
+      "domain": "guidepointsecurity.com",
+      "pages": [
+        "https://www.guidepointsecurity.com/blog/",
+        "https://www.guidepointsecurity.com/newsroom/",
+        "https://www.guidepointsecurity.com/resources/"
+      ],
+      "notes": "Mid-market to enterprise VAR — watch for identity/SaaS security focus areas and new vendor partnerships"
+    },
+    {
+      "name": "Trace3",
+      "domain": "trace3.com",
+      "pages": [
+        "https://trace3.com/news/"
+      ],
+      "notes": "Enterprise VAR — cloud and security practice. Watch for SaaS and identity security vendor additions"
+    },
+    {
+      "name": "WWT",
+      "domain": "wwt.com",
+      "pages": [
+        "https://www.wwt.com/blog",
+        "https://www.wwt.com/partners",
+        "https://www.wwt.com/events"
+      ],
+      "notes": "Enterprise VAR — federal and healthcare focus. Watch for cloud security practice announcements"
+    },
+    {
+      "name": "EverSec",
+      "domain": "eversecgroup.com",
+      "pages": [
+        "https://www.eversecgroup.com/solutions",
+        "https://www.eversecgroup.com/services"
+      ],
+      "notes": "MSSP — deep Obsidian expertise. Watch for new vendor relationships and service offerings. Domain moved from eversecsecurity.com to eversecgroup.com"
+    },
+    {
+      "name": "Myriad360",
+      "domain": "myriad360.com",
+      "pages": [
+        "https://myriad360.com/insights/"
+      ],
+      "notes": "Mid-market VAR — cloud and security focus. Watch for new vendor partnerships"
+    },
+    {
+      "name": "SHI",
+      "domain": "shi.com",
+      "pages": [
+        "https://www.shi.com/solutions/security",
+        "https://www.shi.com/blog"
+      ],
+      "notes": "Large national VAR — watch for SaaS security and identity vendor additions at scale"
+    },
+    {
+      "name": "CDW",
+      "domain": "cdw.com",
+      "pages": [
+        "https://www.cdw.com/content/cdw/en/solutions/security.html",
+        "https://www.cdw.com/content/cdw/en/articles/security.html"
+      ],
+      "notes": "Large national VAR — watch for SaaS and cloud security vendor additions and co-marketing"
+    }
+  ],
+  "marketplaces": [
+    {
+      "name": "AWS Marketplace",
+      "pages": [
+        "https://aws.amazon.com/marketplace/search/?searchTerms=SaaS+security",
+        "https://aws.amazon.com/marketplace/search/?searchTerms=identity+security"
+      ],
+      "notes": "Track competitor marketplace listings and co-sell announcements"
+    },
+    {
+      "name": "Microsoft Azure Marketplace",
+      "pages": [
+        "https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=SaaS+security"
+      ],
+      "notes": "Azure co-sell motions for security vendors"
+    }
+  ],
+  "linkedin_rss": [
+    {
+      "name": "LinkedIn Bundle 1 — Partners & Competitors",
+      "pages": [
+        "https://rss.app/feeds/_3n86stgCzsChsWYW.xml"
+      ],
+      "notes": "RSS.app bundle — GuidePoint Security, Trace3, WWT, Optiv, SHI, AppOmni, Reco, CrowdStrike, Valence Security, Grip Security"
+    }
+  ],
+  "media_sources": [
+    {
+      "name": "Dark Reading",
+      "pages": ["https://www.darkreading.com/cloud-security", "https://www.darkreading.com/identity-access-management"],
+      "notes": "Broad security — cloud, identity, SaaS"
+    },
+    {
+      "name": "The Hacker News",
+      "pages": ["https://thehackernews.com/"],
+      "notes": "Fast on breaches, new attacks, vendor moves"
+    },
+    {
+      "name": "SecurityWeek",
+      "pages": ["https://www.securityweek.com/"],
+      "notes": "Industry news and vendor announcements"
+    },
+    {
+      "name": "SC Media",
+      "pages": ["https://www.scmagazine.com/"],
+      "notes": "Practitioner-focused security news"
+    },
+    {
+      "name": "Help Net Security",
+      "pages": ["https://www.helpnetsecurity.com/"],
+      "notes": "Vendor news, product launches, industry research"
+    },
+    {
+      "name": "BleepingComputer",
+      "pages": ["https://www.bleepingcomputer.com/"],
+      "notes": "Incident detail and TTPs — good for SaaS breach signals"
+    },
+    {
+      "name": "SiliconANGLE",
+      "pages": ["https://siliconangle.com/category/security/", "https://siliconangle.com/category/ai/"],
+      "notes": "SaaS, Snowflake, AI, integrations — good for vendor partnership stories"
+    },
+    {
+      "name": "VentureBeat AI & Security",
+      "pages": ["https://venturebeat.com/category/ai/", "https://venturebeat.com/category/security/"],
+      "notes": "Agentic AI, LLM, security posture — funding and competitive intel"
+    },
+    {
+      "name": "TechCrunch Security",
+      "pages": ["https://techcrunch.com/category/security/"],
+      "notes": "Funding rounds and competitive intelligence"
+    }
+  ],
+  "channel_news_sources": [
+    {
+      "name": "CRN",
+      "pages": ["https://www.crn.com/security", "https://www.crn.com/channel-programs"],
+      "notes": "#1 for partner moves, MDF programs, vendor-VAR stories, and preferred vendor announcements"
+    },
+    {
+      "name": "Channel Futures",
+      "pages": ["https://www.channelfutures.com/security"],
+      "notes": "VAR and MSSP channel news — new alliances and vendor programs"
+    },
+    {
+      "name": "ChannelE2E",
+      "pages": ["https://www.channele2e.com/"],
+      "notes": "MSP and MSSP channel coverage — vendor partner program changes"
+    },
+    {
+      "name": "MSSP Alert",
+      "pages": ["https://www.msspalert.com/"],
+      "notes": "MSSP-specific news — relevant for EverSec and partner MSSP motions"
+    }
+  ],
+  "analyst_sources": [
+    {
+      "name": "Gartner Security",
+      "pages": ["https://www.gartner.com/en/information-technology/insights/cloud-security"],
+      "notes": "SSPM, ASPM, CNAPP Magic Quadrants and Market Guides — category definition signals"
+    },
+    {
+      "name": "Forrester Security",
+      "pages": ["https://www.forrester.com/research/security-risk/"],
+      "notes": "Waves for SSPM, Zero Trust, XDR — watch for competitor placement changes"
+    },
+    {
+      "name": "ESG / TechTarget",
+      "pages": ["https://www.esg-global.com/research"],
+      "notes": "Enterprise Strategy Group — SaaS security and identity research"
+    }
+  ],
+  "buyer_personas": {
+    "economic_buyers": [
+      "Chief Information Security Officer (CISO)",
+      "VP of Security",
+      "Head of Security",
+      "VP, Cybersecurity",
+      "VP of Cloud Security",
+      "Director of Cloud Security",
+      "Chief Technology Officer (CTO)",
+      "Chief Information Officer (CIO)",
+      "Head of IT"
+    ],
+    "technical_buyers": [
+      "Director of Security Architecture",
+      "Head of Security Architecture",
+      "Director of Security Engineering",
+      "Head of Security Engineering",
+      "Director of Cloud Security",
+      "Cloud Security Architect",
+      "SOC Manager",
+      "Head of SecOps",
+      "Director of Security Operations",
+      "Director of Identity & Access Management",
+      "Manager of Identity Security",
+      "Director of SaaS Security",
+      "Director of Application Security",
+      "Head of Threat Detection & Response",
+      "Detection Engineering",
+      "Incident Response Lead",
+      "Director of Incident Response"
+    ],
+    "risk_and_compliance": [
+      "Head of GRC",
+      "Director of Governance Risk & Compliance",
+      "VP of GRC",
+      "VP of Enterprise Risk Management",
+      "Director of Enterprise Risk Management",
+      "Regulatory Compliance Manager",
+      "Senior Compliance Analyst",
+      "Third-Party Risk Director",
+      "Vendor Risk Manager",
+      "TPRM",
+      "Payments Security Lead",
+      "PCI Owner",
+      "Data Protection Officer (DPO)",
+      "Privacy Officer"
+    ],
+    "it_and_platform_owners": [
+      "Director of IT",
+      "VP of IT Operations",
+      "Head of Infrastructure",
+      "Director of Corporate Security",
+      "Head of Corporate Security",
+      "Salesforce Platform Owner",
+      "Workday Owner",
+      "M365 Owner",
+      "O365 Owner",
+      "ServiceNow Platform Owner",
+      "Snowflake Platform Owner"
+    ],
+    "ai_and_data": [
+      "Head of AI Security",
+      "Director of AI Governance",
+      "Head of Data & AI Platform",
+      "Director of Data Engineering",
+      "Head of Digital Transformation",
+      "Head of Automation",
+      "Head of Innovation"
+    ]
+  },
+  "market_trend_keywords": [
+    "SSPM",
+    "SaaS Security Posture Management",
+    "SaaS posture",
+    "SaaS misconfigurations",
+    "SaaS attack surface",
+    "SaaS risk management",
+    "SaaS compliance",
+    "SaaS privilege management",
+    "excessive SaaS privileges",
+    "permission sprawl",
+    "shadow admins",
+    "dormant SaaS accounts",
+    "SaaS identity threat",
+    "SaaS ITDR",
+    "OAuth token compromise",
+    "SaaS-to-SaaS integration risk",
+    "AI agent security",
+    "AI agent governance",
+    "shadow AI",
+    "GenAI governance",
+    "GenAI data leakage",
+    "prompt injection",
+    "Copilot security",
+    "Agentforce security",
+    "DeepSeek enterprise risk",
+    "SaaS supply chain security",
+    "SaaS supply chain risk",
+    "OAuth integrations",
+    "third-party SaaS risk",
+    "shadow SaaS",
+    "unfederated SaaS apps",
+    "SaaS sprawl",
+    "browser extension security",
+    "NYDFS SaaS",
+    "DORA SaaS"
+  ]
+}
