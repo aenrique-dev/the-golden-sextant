@@ -1,0 +1,351 @@
+{
+  "generated_at": "2026-03-13T14:00:00.000000",
+  "run_id": "demo0313b",
+  "run_label": "Demo — Saved Digest (2026-03-13)",
+  "total_pages_scanned": 67,
+  "total_signals_found": 10,
+  "summary_narrative": "Ecosystem Radar scanned 67 pages across competitors, partners, target accounts, media, and channel sources. Surfaced 10 actionable signals across Obsidian's three pillars — SSPM, Agentic AI, and SaaS Supply Chain. Citi is in an active SSPM evaluation with VP-level hiring and executive public statements — live deal signal. CrowdStrike is aggressively acquiring identity stack companies (SGNL) and building AI agent security mindshare. Reco raised $30M targeting the AI SaaS gap. GuidePoint deepened its Palo Alto relationship — requires partner counter-positioning. 6 signals require action this week.",
+  "watchlist_coverage": {
+    "competitor": 18,
+    "partner": 20,
+    "marketplace": 3,
+    "media": 12,
+    "channel_news": 5,
+    "analyst": 3,
+    "linkedin": 1
+  },
+  "top_entries": [
+    {
+      "signal": {
+        "signal_id": "a1b2c3d4e5f60007",
+        "company_name": "Citi",
+        "company_type": "target_account",
+        "target_account": "Citi",
+        "source_url": "https://www.linkedin.com/company/citi/jobs/",
+        "signal_type": "buying_signal",
+        "pillar": "SSPM",
+        "title": "Citi expanding SSPM capabilities — VP-level hiring for SSPM, CNAPP, and OAuth risk",
+        "summary": "Citi is actively expanding its SaaS Security Posture Management capabilities as a core component of its Cloud Continuous Monitoring (CCM) program. The firm is hiring VP-level Cloud Security Engineers and Cloud Security Incident Responders specifically focused on SSPM, CNAPP, OAuth risk management, and SaaS sprawl. Citi security leaders have publicly spoken about managing 'SaaS chaos' using SSPM tools.",
+        "why_it_matters": "Citi is in an active evaluation and expansion phase for SSPM — this is a live deal signal, not future intent. VP-level hiring means budget is allocated and a project owner exists. Their public framing around OAuth risk and SaaS sprawl maps directly to Obsidian's differentiated capabilities. This is the highest-value FSI account signal in the digest.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-03-10",
+        "related_partner": "Optiv",
+        "affected_segment": "FSI — Tier 1 bank, active SSPM evaluation",
+        "confidence": 0.94,
+        "priority": "high",
+        "priority_score": 0.97,
+        "priority_rationale": "Active SSPM program with budget allocated, VP hiring underway, and public executive signals — highest urgency target account signal in the digest.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "a1b2c3d4e5f60007",
+          "action_type": "account_activation",
+          "description": "Engage Optiv and EverSec immediately for a Citi warm introduction. Citi's CCM program is actively scoping SSPM vendors — Obsidian's OAuth risk management and SaaS sprawl detection maps exactly to their stated requirements. Prepare a Citi-specific demo environment highlighting FSI compliance (NYDFS, GLBA) and OAuth abuse detection. Request that Optiv's FSI practice lead make an introduction to the Cloud Security team before another vendor gets into the evaluation.",
+          "suggested_owner": "AE + Partner Manager",
+          "suggested_partners": ["Optiv", "EverSec"],
+          "suggested_accounts": ["Citi — Cloud Security team, VP Cloud Security Engineer (open role)"],
+          "outreach_draft": "Hi [Optiv contact] — flagging a live signal at Citi. They're expanding their SSPM program under their Cloud Continuous Monitoring initiative and are actively hiring VP-level cloud security roles scoped specifically to SSPM, CNAPP, and OAuth risk. Their leaders have been public about tackling 'SaaS chaos' — which is exactly Obsidian's wheelhouse. If you have an existing relationship with their cloud security team, now is the right time for an introduction. I can have a Citi-tailored demo ready with NYDFS compliance and OAuth abuse detection highlighted. Can we get on a call this week to coordinate approach?"
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "a3f9c2e1b7d04518",
+        "company_name": "CrowdStrike",
+        "company_type": "competitor",
+        "source_url": "https://www.crowdstrike.com/blog/",
+        "signal_type": "product_launch",
+        "pillar": "Agentic AI",
+        "title": "CrowdStrike acquires SGNL to build full identity stack — SGNL + Adaptive Shield + FalconID",
+        "summary": "CrowdStrike announced the acquisition of SGNL in January 2026, explicitly framing it as an expansion of identity security capabilities 'in the AI Era.' This follows the earlier acquisition of Adaptive Shield (SSPM) and the February 2026 launch of FalconID with phishing-resistant MFA and just-in-time PAM. CrowdStrike is simultaneously publishing agentic defense architecture documentation and threat research on agentic tool-chain attacks, signaling a full-platform AI identity security push.",
+        "why_it_matters": "CrowdStrike is rapidly assembling an end-to-end identity + SaaS security stack via M&A (Adaptive Shield for SSPM, SGNL for AI-era identity) and positioning Falcon as the default platform for enterprise security buyers — directly threatening Obsidian's differentiated positioning around in-app SaaS identity threat detection. Partner teams at Optiv, GuidePoint, and Presidio who carry CrowdStrike may begin defaulting to Falcon for SaaS identity deals. Obsidian's partner team must urgently arm VAR partners with a crisp competitive wedge: Falcon/Adaptive Shield focuses on posture and privilege control, while Obsidian detects runtime identity misuse and cross-SaaS incident reconstruction that endpoint telemetry cannot see.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-01-08",
+        "related_partner": null,
+        "affected_segment": "Enterprise CISO, SOC Manager, IAM — accounts already running CrowdStrike Falcon",
+        "confidence": 0.92,
+        "priority": "high",
+        "priority_score": 0.93,
+        "priority_rationale": "CrowdStrike's sequential M&A directly encroaches on Obsidian's SaaS identity threat detection market and creates platform consolidation pressure at shared VAR partners.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "a3f9c2e1b7d04518",
+          "action_type": "competitive_response",
+          "description": "Develop and distribute a CrowdStrike competitive battlecard update specifically covering the SGNL acquisition and Adaptive Shield integration. The battlecard should articulate what Falcon cannot do: detect live, in-app identity misuse after authentication, reconstruct cross-SaaS incident timelines, and surface OAuth abuse between SaaS apps — all areas where Obsidian's knowledge graph approach is differentiated. Prioritize delivery to partner SEs at Optiv and GuidePoint who carry both Falcon and Obsidian. Schedule a 30-minute competitive enablement call with each partner's practice lead before RSAC 2026 (March 23).",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["Optiv", "GuidePoint Security", "Presidio"],
+          "suggested_accounts": ["Large enterprise accounts running CrowdStrike Falcon with 500+ SaaS seats"],
+          "outreach_draft": "Hey [Partner SE Name] — wanted to flag that CrowdStrike just closed the SGNL acquisition (Jan 8), piling it on top of Adaptive Shield. We're updating our competitive battlecard and I'd love 30 minutes with you before RSAC to walk through where Falcon still has blind spots — specifically runtime in-app identity misuse and cross-SaaS forensics that endpoint telemetry can't reconstruct. These are the exact gaps that come up when a buyer asks 'why not just use what we already have with CrowdStrike?' We have crisp answers. Can we grab time the week of March 18?"
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "a1b2c3d4e5f60008",
+        "company_name": "Citi",
+        "company_type": "target_account",
+        "target_account": "Citi",
+        "source_url": "https://www.linkedin.com/company/citi/",
+        "signal_type": "executive_signal",
+        "pillar": "SSPM",
+        "title": "Citi security leader publicly addresses 'SaaS chaos' — C-suite SSPM commitment confirmed",
+        "summary": "A Citi security leader participated in an industry panel discussion addressing the challenge of controlling 'SaaS chaos' through SSPM tooling. The executive cited OAuth integrations, shadow SaaS sprawl, and configuration drift as the three primary risk areas Citi is prioritizing in their SaaS security program.",
+        "why_it_matters": "An executive-level public statement on SSPM priorities signals that the initiative has C-suite backing and is past the evaluation stage — budget is committed. The specific callout of OAuth integrations and shadow SaaS maps perfectly to Obsidian's differentiation over configuration-only SSPM tools like Falcon Shield. This is a strategic entry point for a business value conversation, not a technical demo.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-03-05",
+        "related_partner": "EverSec",
+        "affected_segment": "FSI — Citi, exec-level SSPM program",
+        "confidence": 0.89,
+        "priority": "high",
+        "priority_score": 0.91,
+        "priority_rationale": "Executive-level public SSPM commitment with specific callouts matching Obsidian's differentiation — strong entry point for a business value conversation.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "a1b2c3d4e5f60008",
+          "action_type": "account_activation",
+          "description": "Use the executive's public statement as the hook for outreach — reference their specific language around 'SaaS chaos,' OAuth, and shadow SaaS. Obsidian's runtime detection story (beyond configuration scanning) directly addresses the gaps they've publicly identified. Engage EverSec as the FSI-credentialed MSSP for a warm introduction at the security leader level. Prepare a one-pager framing Obsidian as the 'what comes after SSPM' layer that detects OAuth abuse and shadow SaaS activity at runtime.",
+          "suggested_owner": "AE",
+          "suggested_partners": ["EverSec", "Optiv"],
+          "suggested_accounts": ["Citi — CISO office, Cloud Security leadership"],
+          "outreach_draft": "Hi [EverSec contact] — saw that a Citi security leader spoke publicly about tackling 'SaaS chaos' with SSPM — specifically calling out OAuth integrations and shadow SaaS as their top priorities. That language is a direct match for Obsidian's differentiation: we go beyond configuration scanning to detect runtime OAuth abuse and shadow SaaS activity that posture tools miss entirely. If you have a relationship with their security leadership team, I'd love to explore a co-led business value conversation. I can tailor the narrative to their CCM program and NYDFS obligations — and make sure we're in the room before this evaluation moves forward."
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "d82b5a0f3c1e7694",
+        "company_name": "Reco",
+        "company_type": "competitor",
+        "source_url": "https://www.reco.ai/blog",
+        "signal_type": "product_launch",
+        "pillar": "Agentic AI",
+        "title": "Reco raises $30M Series B, launches Agentic Security Posture Management targeting AI SaaS gap",
+        "summary": "On February 10, 2026, Reco closed a $30M Series B (total $85M raised) anchored by Zeev Ventures with participation from Insight Partners, Workday Ventures, TIAA Ventures, and others. The funding announcement explicitly frames Reco's differentiation as addressing the 'AI SaaS security gap' — the inability of traditional SSPM tools to provide visibility into thousands of AI apps and agents. Reco simultaneously launched Agentic Security Posture Management and Shadow AI Discovery capabilities.",
+        "why_it_matters": "Reco's Series B and product positioning directly target the same emerging 'AI agent governance' and 'shadow AI discovery' market that Obsidian is entering, and their investor base includes Workday Ventures — signaling deep SaaS-native distribution potential. With $85M in total funding and an explicit narrative around AI SaaS gaps in legacy SSPM, Reco is becoming a well-capitalized competitor for Obsidian's Agentic AI and SSPM pipeline deals. Obsidian's partner team should accelerate their own AI agent governance narrative and ensure VAR partners can clearly distinguish Obsidian's identity-first, knowledge-graph-based detection from Reco's posture and inventory approach.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-02-10",
+        "related_partner": null,
+        "affected_segment": "CISO, SOC Manager, App Owner — mid-market to enterprise with heavy SaaS and AI tool sprawl",
+        "confidence": 0.91,
+        "priority": "high",
+        "priority_score": 0.89,
+        "priority_rationale": "Fresh $85M funding with explicit AI SaaS security positioning creates near-term pipeline competition and may influence partner mindshare at RSAC conversations.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "d82b5a0f3c1e7694",
+          "action_type": "content_opportunity",
+          "description": "Develop a partner-ready one-pager and talk track that directly contrasts Obsidian's AI agent governance approach against Reco's freshly funded Agentic Security Posture Management. The content should emphasize Obsidian's knowledge graph correlating identity, activity, and access at runtime — versus Reco's inventory and posture-scanning approach — with proof points from customer case studies. Use this material as a leave-behind at RSAC 2026 conversations and distribute to all VAR partner SEs before the event.",
+          "suggested_owner": "Marketing",
+          "suggested_partners": ["Optiv", "WWT", "GuidePoint Security"],
+          "suggested_accounts": ["Mid-market and enterprise accounts with 200+ SaaS apps and active AI tool adoption"],
+          "outreach_draft": "Hi [Partner Name] — Reco just announced a $30M Series B and is pushing hard on 'AI SaaS security posture' as a new category. We've put together a quick talk track and one-pager that helps you position Obsidian clearly when Reco comes up in accounts — the key wedge is that we detect runtime identity misuse and AI agent abuse in-app, not just inventory and posture. Would love to send this over before RSAC and grab 15 minutes to walk through it so your SEs feel confident when the conversation comes up."
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "a3f82c1d9e047b56",
+        "company_name": "GuidePoint Security",
+        "company_type": "partner",
+        "source_url": "https://www.guidepointsecurity.com/newsroom/",
+        "signal_type": "partner_move",
+        "pillar": "SSPM",
+        "title": "GuidePoint named Palo Alto Networks 2025 North America Growth Partner of the Year",
+        "summary": "GuidePoint Security was recognized as Palo Alto Networks' 2025 North America Growth Partner of the Year, signaling a deepening strategic investment in the Palo Alto ecosystem. Palo Alto Networks markets Prisma SaaS and its CASB/SSPM capabilities as part of its Cortex and SASE portfolio, which compete directly with Obsidian Security. This award indicates GuidePoint is prioritizing Palo Alto co-selling motions and will face internal pressure to lead with bundled Palo Alto capabilities.",
+        "why_it_matters": "As GuidePoint deepens its Palo Alto relationship, they face internal pressure to lead with Palo Alto's bundled SSPM/CASB capabilities over standalone SaaS security platforms like Obsidian. This creates urgency for the Obsidian partner team to articulate where Obsidian fills gaps Palo Alto cannot — particularly runtime identity misuse, cross-SaaS incident reconstruction, and AI agent governance. Failing to act risks Obsidian losing mindshare within GuidePoint's fastest-growing practice before Q2 pipeline locks in.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-03-01",
+        "related_partner": "Palo Alto Networks",
+        "affected_segment": "Enterprise CISO, SOC Manager, IAM teams considering SASE/SSPM consolidation",
+        "confidence": 0.88,
+        "priority": "high",
+        "priority_score": 0.88,
+        "priority_rationale": "Top-tier award signals GuidePoint is actively growing Palo Alto revenue, which directly threatens Obsidian's ability to compete for wallet share inside GuidePoint's practice.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "a3f82c1d9e047b56",
+          "action_type": "competitive_response",
+          "description": "Schedule a briefing with GuidePoint's Palo Alto-aligned practice leaders to present a clear competitive differentiation narrative: Obsidian detects runtime identity misuse and cross-SaaS lateral movement that Prisma SaaS does not surface. Develop a one-page battle card specifically contrasting Obsidian vs. Palo Alto SSPM/CASB for GuidePoint sellers. Identify two or three GuidePoint-managed accounts where Palo Alto SASE is already deployed but SaaS identity threat detection is absent, and propose a complementary Obsidian PoV before RSA 2026.",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["GuidePoint Security"],
+          "suggested_accounts": ["Enterprise accounts with Palo Alto SASE deployed, lacking SaaS identity runtime detection"],
+          "outreach_draft": "Congrats on the Palo Alto Growth Partner of the Year award — that's a real testament to the team's execution. I wanted to connect because we're seeing a consistent gap in accounts running Palo Alto SASE: they have strong posture visibility but limited runtime detection of identity misuse across SaaS apps like Salesforce, ServiceNow, and Google Workspace. Obsidian sits right in that gap — we correlate identity, access, and activity across the SaaS stack in ways CASB and SSPM tools don't reach. I'd love to walk your practice leads through two or three joint account scenarios ahead of RSA where we can show a complementary motion rather than a competing one."
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "5b2a7f83e1cd490e",
+        "company_name": "Optiv",
+        "company_type": "partner",
+        "source_url": "https://www.optiv.com/insights",
+        "signal_type": "product_launch",
+        "pillar": "Agentic AI",
+        "title": "Optiv formalizes AI Security practice — AI App Threat Modeling, Secure AI SME, AI Executive Briefing",
+        "summary": "Optiv announced an expansion of AI-focused security offerings in late February 2026, including an AI Vision & Strategy service, AI Application Threat Modeling, Secure AI SME Support, and AI Executive Briefing for enterprise clients deploying AI applications. These services are positioned to help enterprises assess and reduce risk from AI adoption. The timing coincides with rising enterprise concern over AI agent behavior, data access, and governance.",
+        "why_it_matters": "Optiv's AI security service expansion creates a direct opening for Obsidian's AI Agent Governance pillar — Optiv now has an active, funded practice to advise clients on AI risk, but lacks a runtime detection layer for what AI agents actually do inside SaaS environments. Obsidian can position as the enforcement and detection complement to Optiv's advisory services, turning their AI threat modeling engagements into Obsidian PoV opportunities. This is one of the highest-leverage co-sell plays available given Optiv's scale and enterprise client base.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-02-24",
+        "related_partner": null,
+        "affected_segment": "Enterprise CISOs, App Owners, and AI governance teams deploying AI/LLM applications on SaaS platforms",
+        "confidence": 0.86,
+        "priority": "high",
+        "priority_score": 0.87,
+        "priority_rationale": "Optiv's AI security services are live and client-facing, creating immediate pipeline where Obsidian's AI Agent Governance capability is a direct and timely fit.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "5b2a7f83e1cd490e",
+          "action_type": "partner_enablement",
+          "description": "Request a meeting with Optiv's AI security practice lead to introduce Obsidian's AI Agent Governance capability as a runtime detection layer that complements their threat modeling advisory work. Prepare a one-pager mapping Optiv's AI threat modeling outputs (e.g., identified AI app risks) to Obsidian detection use cases (AI agent accessing sensitive SaaS data, privilege escalation via AI integration). Propose a joint client offer: Optiv threat models the AI environment, Obsidian provides continuous runtime monitoring for AI agents operating inside SaaS. Prioritize clients where Optiv is running AI Vision & Strategy engagements as warm PoV targets.",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["Optiv"],
+          "suggested_accounts": ["Enterprise clients in AI adoption phase, deploying LLM/agent workloads on SaaS platforms"],
+          "outreach_draft": "I saw Optiv's expanded AI security services announcement — the AI Application Threat Modeling and AI Executive Briefing offerings are exactly what enterprises need right now. I wanted to connect because Obsidian has a natural downstream fit: once your team has modeled the AI threat surface for a client, Obsidian provides the runtime detection layer that watches what AI agents actually do inside their SaaS stack — who they access, what data they touch, and when they deviate from expected behavior. We're seeing strong interest from CISOs who've done the governance work but have zero visibility once agents go live. I'd love to explore a joint offer where Optiv's threat modeling feeds directly into an Obsidian AI Agent Governance deployment."
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "a1b2c3d4e5f60004",
+        "company_name": "CrowdStrike",
+        "company_type": "competitor",
+        "source_url": "https://www.crowdstrike.com/en-us/blog/introducing-ai-unlocked-interactive-prompt-injection-challenge/",
+        "signal_type": "market_trend",
+        "pillar": "Agentic AI",
+        "title": "CrowdStrike launches prompt injection challenge — racing to own the AI agent security narrative",
+        "summary": "CrowdStrike released 'AI Unlocked: Decoding Prompt Injection,' an interactive Falcon Encounter lab where practitioners learn to execute prompt injection attacks against an AI agent. CrowdStrike claims the industry's most comprehensive taxonomy of prompt injection techniques spanning hundreds of methods, emphasizing AI agents with 'expansive system access' as the critical risk vector. This is a content marketing and mindshare play, not a product announcement.",
+        "why_it_matters": "CrowdStrike is racing to own the AI Prompt Security narrative — one of Obsidian's three core pillars. Their framing is model and infrastructure-level. Obsidian's differentiation is detecting prompt injection outcomes inside SaaS: unauthorized data access in Salesforce, policy bypass in Workday, agent actions in Copilot — the blast radius CrowdStrike can't see from the endpoint. The window to establish Obsidian's counter-narrative is 48–72 hours while this content is fresh.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-03-01",
+        "related_partner": "Optiv",
+        "affected_segment": "AI-forward enterprises deploying Copilot, Agentforce, or custom LLM agents",
+        "confidence": 0.97,
+        "priority": "high",
+        "priority_score": 0.85,
+        "priority_rationale": "Competitor building mindshare directly in Obsidian's Agentic AI pillar — counter-narrative needed before content saturates the field.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "a1b2c3d4e5f60004",
+          "action_type": "competitive_response",
+          "description": "Brief Optiv and GuidePoint on Obsidian's AI Prompt Security pillar before CrowdStrike's content saturates their field teams. Obsidian's wedge: we detect what happens after a prompt injection succeeds — inside the SaaS app, at the data layer. CrowdStrike sees the model; Obsidian sees the blast radius. Provide partners with a one-paragraph talk track for when buyers mention the CrowdStrike challenge, and flag it to the Obsidian marketing team as a content response opportunity.",
+          "suggested_owner": "Partner Manager + Marketing",
+          "suggested_partners": ["Optiv", "GuidePoint Security", "EverSec"],
+          "suggested_accounts": ["Enterprises with active Salesforce Agentforce rollouts", "M365 Copilot enterprise deployments", "FSI using AI in customer-facing workflows"],
+          "outreach_draft": "Hey [Partner] — CrowdStrike just dropped a prompt injection awareness campaign and is actively building mindshare around AI agent risk. Wanted to make sure you have Obsidian's angle before this starts coming up in your conversations. The key differentiator: CrowdStrike is approaching this at the model and infrastructure layer, while Obsidian detects what happens inside SaaS after a prompt injection succeeds — the unauthorized data access in Salesforce, the policy bypass in Workday, the Copilot actions your security team never approved. That's the blast radius story, and it resonates strongly with CISOs who are already deploying AI tools. Can we do a quick 20-minute brief this week before RSA?"
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "7e4c1d9a0b2f853e",
+        "company_name": "AppOmni",
+        "company_type": "competitor",
+        "source_url": "https://appomni.com/partners/",
+        "signal_type": "partner_move",
+        "pillar": "SSPM",
+        "title": "AppOmni activates formal channel program (Infinity Partner) while CrowdStrike co-sell remains active",
+        "summary": "AppOmni's active Infinity Partner Program is structured for channel partners and resellers with formal training, support tiers, and go-to-market enablement. This co-exists with AppOmni's active co-sell partnership with CrowdStrike, which integrates AppOmni's SaaS security capabilities into Falcon-led deals. The combined AppOmni-CrowdStrike motion gives channel partners a bundled SSPM + endpoint narrative with CrowdStrike's deep channel reach.",
+        "why_it_matters": "AppOmni's Infinity Partner Program combined with an active CrowdStrike co-sell agreement creates a channel flanking motion — VAR partners who carry CrowdStrike can now sell bundled SSPM with a familiar motion, potentially displacing Obsidian in accounts where the buyer wants platform consolidation. Obsidian's VAR partners (especially Optiv and Presidio) face a situation where AppOmni + CrowdStrike may be positioned as a turnkey SaaS security add-on. Partners need a crisp story: AppOmni covers posture and configuration drift, Obsidian uniquely covers identity threat detection, account takeover, and SaaS supply chain compromise.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-02-15",
+        "related_partner": "CrowdStrike",
+        "affected_segment": "Enterprise accounts with existing CrowdStrike Falcon deployment considering SaaS security add-ons",
+        "confidence": 0.87,
+        "priority": "high",
+        "priority_score": 0.86,
+        "priority_rationale": "AppOmni-CrowdStrike co-sell combined with formal VAR channel creates direct displacement risk in accounts where Obsidian's VAR partners also carry Falcon.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "7e4c1d9a0b2f853e",
+          "action_type": "partner_enablement",
+          "description": "Schedule quarterly business reviews with Optiv and Presidio practice leads to surface any accounts where AppOmni is being positioned alongside CrowdStrike Falcon. Prepare a tri-vendor competitive reference card (Obsidian vs. AppOmni vs. CrowdStrike Adaptive Shield) so partner SEs can navigate three-way competitive conversations. Focus the Obsidian story on gaps neither product addresses: post-authentication in-app identity misuse, OAuth supply chain compromise, and cross-SaaS breach timeline reconstruction. Escalate any account where AppOmni and CrowdStrike are both in a deal to Obsidian's Channel Chief for executive support.",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["Optiv", "Presidio", "GuidePoint Security"],
+          "suggested_accounts": ["Large enterprise accounts with CrowdStrike Falcon deployed and active SaaS security evaluation in flight"],
+          "outreach_draft": "Hey [Partner Name] — we're tracking AppOmni's co-sell motion with CrowdStrike getting more active in the field and wanted to make sure your SEs have what they need when this comes up. We've built a three-way competitive reference card covering AppOmni, Falcon/Adaptive Shield, and Obsidian — the short story is that both leave a real gap in runtime identity threat detection and SaaS supply chain forensics. Can we get 20 minutes on the calendar before RSA to walk through any accounts where this might be live?"
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "d71e390fa2b85c04",
+        "company_name": "GuidePoint Security",
+        "company_type": "partner",
+        "source_url": "https://www.guidepointsecurity.com/resources/",
+        "signal_type": "market_trend",
+        "pillar": "SSPM",
+        "title": "GuidePoint publishes 'State of IAM Maturity 2025' and runs Identity-focused webinar series",
+        "summary": "GuidePoint released a 'State of IAM Maturity 2025' report alongside an on-demand webinar titled 'Identity's Expanding Role in Cyber Defense' (February 18, 2026) and a concurrent AI Governance whitepaper (February 24, 2026). Together these assets indicate GuidePoint is actively building pipeline and thought leadership around identity security maturity for enterprise buyers — with no current SaaS identity vendor featured in the content.",
+        "why_it_matters": "GuidePoint is generating IAM-focused demand that Obsidian can directly benefit from — the gap between traditional IAM maturity (AD, IdP, MFA) and runtime SaaS identity threat detection is exactly where Obsidian operates. This is an opportunity to co-author content, sponsor a webinar slot, or co-present on 'what comes after IAM' before a competitor fills that role. Acting now lets Obsidian shape GuidePoint's identity narrative with minimal lift.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-02-24",
+        "related_partner": null,
+        "affected_segment": "Enterprise IAM leaders, CISOs evaluating identity program maturity, SOC teams",
+        "confidence": 0.84,
+        "priority": "high",
+        "priority_score": 0.84,
+        "priority_rationale": "GuidePoint's IAM maturity content is actively in-market and creating buyer conversations that Obsidian can plug into today with minimal lift.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "d71e390fa2b85c04",
+          "action_type": "content_opportunity",
+          "description": "Propose a joint content piece with GuidePoint's identity practice — a follow-on to the IAM Maturity report focused on what organizations do after they've deployed SSO, MFA, and PAM, and why SaaS identity threat detection is the next frontier. Offer Obsidian's threat intelligence and customer case studies as raw material. Suggest a co-hosted webinar with GuidePoint's identity practice lead on 'Beyond Active Directory: Detecting Identity Threats in SaaS at Runtime.' Align timing with GuidePoint's existing content calendar for March–April.",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["GuidePoint Security"],
+          "suggested_accounts": ["Enterprises with mature IAM programs seeking SaaS-layer threat detection"],
+          "outreach_draft": "I've been following GuidePoint's IAM maturity report and the 'Identity's Expanding Role' webinar — really strong content that's clearly resonating with buyers. I think there's a natural follow-on story we could tell together: organizations that have checked the box on SSO, MFA, and PAM are increasingly blind to identity misuse happening inside their SaaS apps. That's the exact space Obsidian operates in, and I'd love to explore co-authoring a short piece or joint webinar with your identity practice on what IAM maturity looks like at the SaaS runtime layer. We can bring anonymized customer data and real detection examples — it would give GuidePoint's content program something concrete and differentiated."
+        }
+      ]
+    },
+    {
+      "signal": {
+        "signal_id": "9c4d16b07a3fe821",
+        "company_name": "Myriad360",
+        "company_type": "partner",
+        "source_url": "https://myriad360.com/insights/",
+        "signal_type": "competitor_move",
+        "pillar": "SaaS Supply Chain",
+        "title": "Myriad360 RSA recap features CrowdStrike, Palo Alto, SentinelOne — Obsidian absent",
+        "summary": "A Myriad360 RSA Conference recap blog highlights several competitor moves: Salt Security announced a partnership with CrowdStrike, Palo Alto Networks acquired Protect AI to strengthen its AI security stack, and SentinelOne launched Purple AI Athena. The post frames 'agentic AI security systems' and 'identity security solutions' as major RSA themes. Cyera appeared with an Omni DLP announcement.",
+        "why_it_matters": "Myriad360 is actively tracking and amplifying competitor co-marketing (CrowdStrike, Palo Alto, SentinelOne) in the identity and AI security space — categories where Obsidian competes directly. Obsidian has no visible position in their content or partner conversations. The RSA recap is a leading indicator of which vendors Myriad360 sellers will bring into deals; Obsidian's absence here is a gap that needs closing before Q2 pipeline solidifies around RSA momentum.",
+        "detected_at": "2026-03-13T14:00:00.000000",
+        "publish_date": "2026-03-01",
+        "related_partner": "CrowdStrike",
+        "affected_segment": "Mid-market and enterprise security teams evaluating AI security, identity threat detection, and SaaS supply chain risk",
+        "confidence": 0.80,
+        "priority": "medium",
+        "priority_score": 0.80,
+        "priority_rationale": "Myriad360 is actively shaping buyer perception using competitor narratives; Obsidian's absence creates near-term displacement risk as Q2 deals form.",
+        "is_new": true
+      },
+      "actions": [
+        {
+          "signal_id": "9c4d16b07a3fe821",
+          "action_type": "competitive_response",
+          "description": "Reach out to Myriad360's security practice lead with a targeted debrief on how Obsidian fits within the identity and AI security landscape they're already writing about — specifically addressing the gaps left by CrowdStrike Falcon Shield and Palo Alto's SSPM. Offer to co-author a follow-on RSA recap piece or contribute a quote on the SaaS identity threat detection market post-RSA. Request a seller enablement session to get Obsidian into Myriad360's active deal qualification framework before Q2 pipeline locks in. Use Optiv and GuidePoint references as social proof of VAR adoption.",
+          "suggested_owner": "Partner Manager",
+          "suggested_partners": ["Myriad360"],
+          "suggested_accounts": ["Mid-market and enterprise accounts evaluating AI agent security or SaaS identity threat detection post-RSA"],
+          "outreach_draft": "I caught your RSA recap piece highlighting the Salt+CrowdStrike integration and the Palo Alto/Protect AI acquisition — great coverage of a busy week. I wanted to introduce Obsidian Security because we're operating in exactly the space your blog is tracking: AI agent governance and SaaS identity threat detection. Where CrowdStrike brings endpoint telemetry and Palo Alto brings posture, Obsidian brings deep in-app visibility into what identities and AI agents are actually doing across SaaS — real-time account takeover detection, SaaS supply chain compromise forensics, and AI agent behavioral monitoring. We're growing fast with VARs who want a differentiated identity story alongside their existing CrowdStrike and Palo Alto practices, and I'd love to show your team where Obsidian fits."
+        }
+      ]
+    }
+  ]
+}
