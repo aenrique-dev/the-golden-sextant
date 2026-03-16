@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sutherland Global — Scout Brief | Obsidian Ecosystem Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent:  #5565E2;
+      --accent2: #61CEF4;
+      --navy:    #0B173B;
+      --green:   #059669;
+      --amber:   #FF9D03;
+      --red:     #dc2626;
+      --text:    #131313;
+      --muted:   #5a5a5a;
+      --border:  #e0e0e0;
+      --bg:      #F8F8F8;
+      --surface: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 48px 60px;
+      background: var(--surface);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--navy);
+      margin-bottom: 24px;
+    }
+    .header-left .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .header-left h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.15;
+    }
+    .header-left h1 span {
+      color: var(--accent);
+    }
+    .header-meta {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .header-meta strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── VERDICT BANNER ── */
+    .verdict {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2d6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .verdict-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .verdict-text .verdict-headline {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 3px;
+    }
+    .verdict-text p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      margin-top: 24px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── COMPANY SNAPSHOT ── */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .snapshot-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .snapshot-card .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .snapshot-card .card-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* ── SIGNALS ── */
+    .signal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .signal {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .signal-num {
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .signal-body .signal-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .signal-body .signal-desc {
+      font-size: 12px;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.55;
+    }
+    .signal-body .signal-why {
+      font-size: 11px;
+      color: var(--muted);
+      padding-left: 8px;
+      border-left: 2px solid var(--accent2);
+      line-height: 1.5;
+    }
+    .signal-body .signal-why strong {
+      color: var(--accent);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-top: 5px;
+      margin-right: 4px;
+    }
+    .tag-hot   { background: #fef3c7; color: #92400e; }
+    .tag-new   { background: #d1fae5; color: #065f46; }
+    .tag-watch { background: #ede9fe; color: #5b21b6; }
+
+    /* ── PILLAR TABLE ── */
+    .pillar-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .pillar-table th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .pillar-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .pillar-table tr:last-child td { border-bottom: none; }
+    .pillar-table tr:nth-child(even) td { background: var(--bg); }
+    .stars { color: var(--amber); font-size: 12px; letter-spacing: -1px; }
+    .stars .empty { color: var(--border); }
+
+    /* ── PEOPLE ── */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .person-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .person-card.primary {
+      border-color: var(--accent);
+      background: rgba(85,101,226,0.04);
+    }
+    .person-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .person-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .person-title {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-bottom: 2px;
+    }
+    .person-context {
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .person-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .person-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+    .badge-econ  { background: #dbeafe; color: #1e40af; }
+    .badge-tech  { background: #d1fae5; color: #065f46; }
+    .badge-risk  { background: #ede9fe; color: #5b21b6; }
+    .badge-ai    { background: #fef3c7; color: #92400e; }
+    .person-linkedin {
+      font-size: 10px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .person-linkedin:hover { text-decoration: underline; }
+
+    /* ── KEYWORDS ── */
+    .keyword-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .keyword {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 14px;
+    }
+
+    /* ── ACTION BOX ── */
+    .action-box {
+      background: #fffbeb;
+      border: 1px solid var(--amber);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .action-box .action-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .action-box ul li {
+      font-size: 12px;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    /* ── SOURCES ── */
+    .sources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sources-list a {
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .sources-list a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 32px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-brand {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.04em;
+    }
+    .footer-brand span { color: var(--accent); }
+    .footer-note {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #fff; }
+      .page { padding: 24px 32px 40px; min-height: unset; max-width: 100%; }
+      .verdict { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .pillar-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .signal-num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a { color: var(--accent) !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="label">Obsidian Ecosystem Radar &nbsp;·&nbsp; Scout Brief</div>
+      <h1>Sutherland <span>Global</span></h1>
+    </div>
+    <div class="header-meta">
+      <div><strong>Date</strong> &nbsp;March 13, 2026</div>
+      <div><strong>Category</strong> &nbsp;Services Integrator / Managed SOC</div>
+      <div><strong>Status</strong> &nbsp;Prospect — Not yet in watchlist</div>
+      <div><strong>Website</strong> &nbsp;<a href="https://www.sutherlandglobal.com" target="_blank" style="color:var(--accent);text-decoration:none;">sutherlandglobal.com</a></div>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict">
+    <div class="verdict-icon">⚡</div>
+    <div class="verdict-text">
+      <div class="verdict-headline">High Potential — Action Recommended This Week</div>
+      <p>Sutherland is a ~$1B digital transformation firm with a managed SOC, an IAM practice, and a rapidly expanding AI security and FSI compliance motion. Their FinAI Hub launch (March 2026) and Google Cloud partnership create direct entry points for Obsidian's AI Agent Governance and SaaS ITDR pillars. Engage as a referral/services partner <em>or</em> as a direct prospect for their internal SaaS stack.</p>
+    </div>
+  </div>
+
+  <!-- COMPANY SNAPSHOT -->
+  <div class="section-title">Company Snapshot</div>
+  <div class="snapshot-grid">
+    <div class="snapshot-card">
+      <div class="card-label">Company Type</div>
+      <div class="card-value">Digital Transformation &amp; BPO</div>
+    </div>
+    <div class="snapshot-card">
+      <div class="card-label">Size</div>
+      <div class="card-value">~60,000 employees globally</div>
+    </div>
+    <div class="snapshot-card">
+      <div class="card-label">Revenue (est.)</div>
+      <div class="card-value">~$1B+</div>
+    </div>
+    <div class="snapshot-card">
+      <div class="card-label">Key Verticals</div>
+      <div class="card-value">FSI, Banking, Insurance, Healthcare, Technology</div>
+    </div>
+    <div class="snapshot-card">
+      <div class="card-label">Cloud Partner</div>
+      <div class="card-value">Google Cloud (expanded Apr 2025)</div>
+    </div>
+    <div class="snapshot-card">
+      <div class="card-label">IP / Patents</div>
+      <div class="card-value">363+ inventions; Sentinel AI patent (May 2025)</div>
+    </div>
+  </div>
+
+  <!-- SIGNALS -->
+  <div class="section-title">Ecosystem Signals</div>
+  <div class="signal-list">
+
+    <div class="signal">
+      <div class="signal-num">1</div>
+      <div class="signal-body">
+        <div class="signal-title">FinAI Hub Launch — Agentic AI for Banking &amp; FSI</div>
+        <div class="signal-desc">Launched March 2026. Domain-trained AI agents across lending, risk, fraud, and compliance — targeting regulated financial institutions at production scale, with built-in governance and human oversight.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> Regulated FIs deploying agentic AI are the exact ICP for Obsidian's AI Agent Governance pillar (Agentforce, Copilot, DeepSeek enterprise risk) and GLBA/NYDFS/DORA compliance use cases.</div>
+        <span class="tag tag-hot">🔥 Hot</span><span class="tag tag-new">New March 2026</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">2</div>
+      <div class="signal-body">
+        <div class="signal-title">Managed SOC — Monitoring M365, AWS, Azure, OCI</div>
+        <div class="signal-desc">24/7 SOC with SIEM monitoring across Office 365, AWS, Azure, OCI, and Hybrid IT. Flexible onsite/offshore/hybrid delivery. Uses AI-based anomaly detection and predictive analytics.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> SOC analysts monitoring M365 have zero in-app SaaS visibility. Obsidian closes the gap — cross-SaaS incident reconstruction, identity chain analysis, and breach clarity that SIEM can't provide.</div>
+        <span class="tag tag-watch">Key Practice</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">3</div>
+      <div class="signal-body">
+        <div class="signal-title">IAM Lifecycle Practice — Credential Compromise Focus</div>
+        <div class="signal-desc">Sutherland manages full IAM lifecycle for clients, explicitly calling out compromised credentials as the #1 exploit vector — language directly aligned with Obsidian's SaaS ITDR positioning.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> They're managing IdP-layer IAM (Okta, Azure AD) but lack runtime SaaS detection. Obsidian adds SSO bypass detection, shadow admin visibility, and excessive privilege enforcement on top.</div>
+        <span class="tag tag-watch">Complementary</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">4</div>
+      <div class="signal-body">
+        <div class="signal-title">Sentinel AI — Patented Data Privacy Platform (May 2025)</div>
+        <div class="signal-desc">U.S.-patented AI security platform providing real-time PII/PCI safeguarding, fraud prevention, GenAI governance, adversarial AI defense, and compliance capabilities.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> Sutherland is actively building AI governance IP. Obsidian's runtime SaaS + AI agent visibility is directly complementary — Sentinel AI handles data-layer privacy, Obsidian handles identity and access behavior across AI-connected SaaS apps.</div>
+        <span class="tag tag-new">Patent 2025</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">5</div>
+      <div class="signal-body">
+        <div class="signal-title">Google Cloud Partnership Expansion (April 2025)</div>
+        <div class="signal-desc">Deepened relationship with Google Cloud, integrating Gemini models, Vertex AI, and Customer Engagement Suite. Listed as an active Google Cloud partner.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> Google Workspace is a top Obsidian connector. Sutherland's Google Cloud client base means Workspace-heavy enterprise accounts — strong Obsidian entry point for SaaS identity and posture use cases.</div>
+        <span class="tag tag-watch">Google Cloud Partner</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">6</div>
+      <div class="signal-body">
+        <div class="signal-title">ComplyAdvantage Partnership — Financial Crime Compliance (Dec 2025)</div>
+        <div class="signal-desc">Launched a native AI compliance solution targeting sophisticated financial crime at banks and FIs. Signals an active FSI compliance motion with GRC buyers already engaged.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> GRC buyers in banking are already activated. Obsidian's compliance use cases for NYDFS, GLBA, and DORA fit directly into this motion — especially for demonstrating SaaS configuration compliance and audit-ready evidence.</div>
+        <span class="tag tag-new">Dec 2025</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div class="signal-num">7</div>
+      <div class="signal-body">
+        <div class="signal-title">SaaS ISV &amp; Cloud Practice — Serves SaaS Vendors Directly</div>
+        <div class="signal-desc">Sutherland provides managed support, cloud ops, and security services to SaaS companies and ISVs — 35+ years of experience with SaaS-native clients at scale.</div>
+        <div class="signal-why"><strong>Obsidian angle:</strong> SaaS-native companies are high-priority Obsidian prospects. Sutherland's practice could surface Obsidian into SaaS vendor clients already embedded in their delivery model.</div>
+        <span class="tag tag-watch">Referral Motion</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PILLAR ALIGNMENT -->
+  <div class="section-title">Obsidian Pillar Alignment</div>
+  <table class="pillar-table">
+    <thead>
+      <tr>
+        <th>Pillar</th>
+        <th>Fit</th>
+        <th>Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SaaS Identity Threat Defense</strong></td>
+        <td><span class="stars">★★★★★</span></td>
+        <td>SOC practice monitors M365/cloud but is blind to in-app SaaS identity misuse — direct Obsidian gap-fill</td>
+      </tr>
+      <tr>
+        <td><strong>AI Agent Governance</strong></td>
+        <td><span class="stars">★★★★★</span></td>
+        <td>FinAI Hub + Sentinel AI = active AI governance motion in FSI; Obsidian secures the SaaS/AI layer on top</td>
+      </tr>
+      <tr>
+        <td><strong>Compliance — GLBA / NYDFS / DORA</strong></td>
+        <td><span class="stars">★★★★<span class="empty">★</span></span></td>
+        <td>FSI-heavy client base, ComplyAdvantage partnership, GRC buyers already activated</td>
+      </tr>
+      <tr>
+        <td><strong>Access &amp; Privilege Control</strong></td>
+        <td><span class="stars">★★★★<span class="empty">★</span></span></td>
+        <td>IAM lifecycle practice provides foundation; Obsidian adds runtime SaaS privilege detection and shadow admin visibility</td>
+      </tr>
+      <tr>
+        <td><strong>SaaS Supply Chain Resilience</strong></td>
+        <td><span class="stars">★★★<span class="empty">★★</span></span></td>
+        <td>Adjacent to cloud and OAuth risk; less direct but relevant for FSI third-party risk programs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- KEY PEOPLE -->
+  <div class="section-title">Key People to Know</div>
+  <div class="people-grid">
+
+    <div class="person-card primary">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Anurana Saluja</div>
+          <div class="person-title">VP, Global Head of Information Security, Privacy &amp; Business Continuity &nbsp;(CISO)</div>
+        </div>
+        <a href="https://www.linkedin.com/in/anuranasaluja/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">14+ years at Sutherland. Leads 100+ person global security team across 20+ countries. Responsible for enterprise info security, data protection, regulatory compliance, and BCP. Active in CISO forums and AI governance discussions.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-econ">Economic Buyer</span>
+        <span class="person-badge badge-tech">Security Owner</span>
+      </div>
+    </div>
+
+    <div class="person-card primary">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Jon G Shende</div>
+          <div class="person-title">Global VP, SecOps, Threat &amp; Vulnerability Mgmt, IR, AI &amp; ML</div>
+        </div>
+        <a href="https://www.linkedin.com/in/jonshende/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">12+ years at Sutherland. Runs the SOC, security architecture, incident response, and IAM programs. Prior CISO at Forensec Global; vCTO for AWS and Azure. Leads AI/ML automation for security operations — a direct Obsidian SaaS ITDR conversation.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-tech">Technical Buyer</span>
+        <span class="person-badge badge-tech">SOC / SecOps</span>
+        <span class="person-badge badge-ai">AI &amp; ML Security</span>
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Doug Gilbert</div>
+          <div class="person-title">Chief Information Officer &amp; Chief Digital Officer</div>
+        </div>
+        <a href="https://www.linkedin.com/in/doug-gilbert/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">Based in Atlanta. Joined Sutherland 2018. Leads digital transformation strategy, AI/ML platform initiatives, and the Google Cloud partnership. Runs the internal SaaS and tech stack. A key Obsidian economic buyer for internal deployment.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-econ">Economic Buyer</span>
+        <span class="person-badge badge-ai">Digital Transformation</span>
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Sandeep Srivastava</div>
+          <div class="person-title">Sr. Associate VP, Information Security (Risk &amp; Compliance — APAC / EMEA)</div>
+        </div>
+        <a href="https://www.linkedin.com/in/sandeep-srivastava-20a1aa5/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">Leads security architecture and GRC for APAC and EMEA regions. Owns PCI DSS standards initiatives. Blended technical and business security skillset — relevant for compliance-led Obsidian conversations.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-tech">Technical Buyer</span>
+        <span class="person-badge badge-risk">GRC / Compliance</span>
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Jim Lusk</div>
+          <div class="person-title">EVP &amp; Chief Financial Officer</div>
+        </div>
+        <a href="https://www.linkedin.com/in/jim-lusk-678a4815/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">30+ years in financial management. Owns Ethics &amp; Compliance, Risk Management, Internal Audit, SOX, and Legal globally — in addition to finance. Relevant for GLBA/NYDFS/DORA compliance-led deals where GRC authority sits in Finance.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-econ">Economic Buyer</span>
+        <span class="person-badge badge-risk">Risk &amp; Compliance</span>
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-top">
+        <div>
+          <div class="person-name">Mano Karthik</div>
+          <div class="person-title">Identity &amp; Access Management Operations Professional</div>
+        </div>
+        <a href="https://www.linkedin.com/in/livemanoo/" target="_blank" class="person-linkedin">↗ LinkedIn</a>
+      </div>
+      <div class="person-context">11+ years in IAM operations at Sutherland. Chennai-based. Manages IAM lifecycle and systems. Technical champion for Obsidian's Access &amp; Privilege Control use case — the person who would feel the pain of SSO bypass and shadow admins daily.</div>
+      <div class="person-badges">
+        <span class="person-badge badge-tech">Technical Buyer</span>
+        <span class="person-badge badge-tech">IAM / Identity</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECURITY VENDOR STACK -->
+  <div class="section-title">Security Vendor Stack</div>
+  <table class="pillar-table">
+    <thead>
+      <tr>
+        <th>Vendor / Tool</th>
+        <th>Category</th>
+        <th>Confidence</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>IBM Security QRadar</strong></td>
+        <td>SIEM</td>
+        <td><span style="color:var(--green);font-weight:700;">● High</span></td>
+        <td>Confirmed via IBM case study. Primary threat detection platform. UBA, anomaly detection, AI-based alerting. Reduced MTTD from days to hours. <strong>Obsidian complements this</strong> — QRadar sees logs, Obsidian sees in-app SaaS identity behavior QRadar can't ingest.</td>
+      </tr>
+      <tr>
+        <td><strong>Microsoft 365</strong></td>
+        <td>Cloud Apps / Email</td>
+        <td><span style="color:var(--green);font-weight:700;">● High</span></td>
+        <td>Confirmed in service offerings. Monitored at SIEM level via QRadar. No evidence of Defender for Cloud Apps or SSPM layer. <strong>Direct Obsidian entry point</strong> — M365 is a top connector.</td>
+      </tr>
+      <tr>
+        <td><strong>AWS / Azure / OCI</strong></td>
+        <td>Cloud Infrastructure</td>
+        <td><span style="color:var(--green);font-weight:700;">● High</span></td>
+        <td>Multi-cloud confirmed. SOC monitors all three via SIEM. Deep Google Cloud partnership (Gemini/Vertex AI). SaaS apps running across these clouds are the Obsidian target surface.</td>
+      </tr>
+      <tr>
+        <td><strong>Sentinel AI</strong> (proprietary)</td>
+        <td>Data Privacy / AI Security</td>
+        <td><span style="color:var(--green);font-weight:700;">● High</span></td>
+        <td>US-patented internal platform for PII/PCI real-time safeguarding and GenAI governance. Sutherland-built. Obsidian is additive — runtime SaaS identity layer vs. Sentinel AI's data-focus.</td>
+      </tr>
+      <tr>
+        <td><strong>ComplyAdvantage</strong></td>
+        <td>FinCrime / Compliance</td>
+        <td><span style="color:var(--amber);font-weight:700;">◐ Medium</span></td>
+        <td>Partnership announced Dec 2025 for FSI clients. Not necessarily deployed internally, but signals active compliance stack investment.</td>
+      </tr>
+      <tr>
+        <td><strong>ManageEngine / ServiceNow</strong></td>
+        <td>ITSM / IAM</td>
+        <td><span style="color:var(--amber);font-weight:700;">◐ Medium</span></td>
+        <td>Listed as technology partners. Likely used for ticket management and service delivery. IAM lifecycle likely built on top of one of these.</td>
+      </tr>
+      <tr>
+        <td><strong>EDR (unknown)</strong></td>
+        <td>Endpoint Detection</td>
+        <td><span style="color:var(--muted);font-weight:700;">○ Not found</span></td>
+        <td>No public evidence of CrowdStrike, SentinelOne, or Defender EDR. Likely present but undisclosed — ask in discovery.</td>
+      </tr>
+      <tr>
+        <td><strong>CASB / SSPM (none detected)</strong></td>
+        <td>SaaS Security</td>
+        <td><span style="color:var(--green);font-weight:700;">● Greenfield</span></td>
+        <td><strong>No AppOmni, Netskope, Zscaler, or SSPM tool found in any public source.</strong> This is the gap Obsidian fills. QRadar + SIEM does not cover in-app SaaS identity behavior.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PARTNER & COMPETITIVE PRESENCE -->
+  <div class="section-title">Partner &amp; Competitive Presence in Account</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+
+    <div style="border:1px solid var(--border);border-radius:6px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px;">VAR / Partner Presence</div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;">
+        <span style="font-size:18px;flex-shrink:0;">🟡</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--navy);">No named VAR documented publicly</div>
+          <div style="font-size:12px;color:var(--text);margin-top:3px;line-height:1.5;">Searches on Optiv, GuidePoint, WWT, Presidio, SHI, CDW, and Trace3 returned zero results for Sutherland. Sutherland operates as a direct technology buyer and services integrator — they do not publicly appear in typical VAR channel announcements.</div>
+          <div style="font-size:11px;color:var(--accent);background:rgba(4,49,182,0.06);border-left:2px solid var(--accent);padding:5px 8px;margin-top:6px;border-radius:0 4px 4px 0;line-height:1.45;">
+            <strong>What this means:</strong> This account is likely not covered by any of our VAR partners yet. Obsidian can go direct or use this as a new partner intro motion — bring Optiv or GuidePoint in cold.
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);">Sutherland's listed tech partners: IBM, AWS, Azure, Oracle, Google Cloud, ManageEngine, ServiceNow, Zendesk.</div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:6px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px;">Competitor Presence</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <span style="font-size:14px;">🔴</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy);">IBM QRadar — Entrenched SIEM</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.4;">Confirmed deployed. QRadar is the incumbent security intelligence platform. Not a direct Obsidian competitor — it's the SIEM Obsidian can feed alerts into.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <span style="font-size:14px;">🟢</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy);">AppOmni / SSPM — Not detected</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.4;">No public evidence of AppOmni, Reco.AI, Grip, or any SSPM vendor. Greenfield for SaaS security posture and ITDR.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <span style="font-size:14px;">🟢</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy);">CrowdStrike / Palo Alto / Wiz — Not detected</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.4;">No evidence of Falcon Shield, XSIAM, or cloud security platforms from these vendors in any public source.</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--accent);background:rgba(4,49,182,0.06);border-left:2px solid var(--accent);padding:5px 8px;border-radius:0 4px 4px 0;line-height:1.45;margin-top:2px;">
+          <strong>Competitive window:</strong> No SaaS security or ITDR competitor is entrenched. IBM QRadar is the security anchor — position Obsidian as the SaaS identity layer that makes QRadar more effective, not a replacement.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- KEYWORDS -->
+  <div class="section-title">Keywords to Use With Sutherland</div>
+  <div class="keyword-cloud">
+    <span class="keyword">SaaS identity threat detection</span>
+    <span class="keyword">AI agent governance</span>
+    <span class="keyword">Agentforce security</span>
+    <span class="keyword">M365 runtime risk</span>
+    <span class="keyword">Google Workspace visibility</span>
+    <span class="keyword">SSO bypass detection</span>
+    <span class="keyword">SaaS privilege visibility</span>
+    <span class="keyword">shadow admins</span>
+    <span class="keyword">NYDFS SaaS compliance</span>
+    <span class="keyword">DORA SaaS</span>
+    <span class="keyword">agentic AI security</span>
+    <span class="keyword">cross-SaaS incident reconstruction</span>
+    <span class="keyword">OAuth token risk</span>
+    <span class="keyword">SaaS ITDR</span>
+    <span class="keyword">GenAI data leakage</span>
+    <span class="keyword">DeepSeek enterprise risk</span>
+    <span class="keyword">breach clarity</span>
+  </div>
+
+  <!-- RECOMMENDED ACTION -->
+  <div class="section-title">Recommended Actions</div>
+  <div class="action-box">
+    <div class="action-title">⚡ This Week — Updated Based on Stack &amp; Competitive Research</div>
+    <ul>
+      <li><strong>Lead with QRadar complement, not replacement.</strong> IBM QRadar is confirmed and entrenched. Frame Obsidian as the SaaS identity visibility layer that makes QRadar alerts actionable — "QRadar sees the log; Obsidian shows you who did what in Salesforce before the alert fired."</li>
+      <li><strong>SaaS security is greenfield.</strong> No SSPM, CASB, or SaaS ITDR vendor detected. This is an uncontested entry — no AppOmni, no CrowdStrike Falcon Shield, no Netskope. Go in before a competitor does.</li>
+      <li><strong>No VAR partner covers this account.</strong> Optiv, GuidePoint, WWT, Presidio — none show up publicly. Decide: go direct to Anurana Saluja (CISO) or bring in a new VAR (GuidePoint FSI team is a strong fit) and use this as a joint intro.</li>
+      <li><strong>Target Jon Shende (VP SecOps/AI/ML) first.</strong> He runs SOC + IAM + AI/ML security. He's the champion — already speaking the language of AI-driven security operations. Obsidian's AI Agent Governance and SaaS ITDR land here.</li>
+      <li><strong>FinAI Hub + NYDFS/DORA is the opener.</strong> They just launched an agentic AI hub for FSI this month (March 2026). Lead with: "How are you governing the SaaS and AI apps your FSI clients are connecting to your FinAI agents?" — this is the Agentforce/Copilot security problem Obsidian solves.</li>
+      <li><strong>Add Sutherland to the watchlist.</strong> Monitor their newsroom for new security vendor announcements and FSI service expansions that could signal a window or threat.</li>
+    </ul>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="section-title">Sources</div>
+  <div class="sources-list">
+    <a href="https://www.sutherlandglobal.com/about-us/latest-news" target="_blank">Sutherland Global — Latest News &amp; Press Releases</a>
+    <a href="https://www.sutherlandglobal.com/services/artificial-intelligence/data-and-ai-security" target="_blank">Sutherland — AI Security: Safeguard Your Data &amp; Systems</a>
+    <a href="https://www.sutherlandglobal.com/services/cloud/cloud-security" target="_blank">Sutherland — Cloud Data Security Solutions</a>
+    <a href="https://www.sutherlandglobal.com/about-us/latest-news/2025/sutherland-and-google-cloud-partner-to-deliver-real-world-ai-solutions-to-businesses-globally" target="_blank">Sutherland + Google Cloud Partnership Announcement (April 2025)</a>
+    <a href="https://cloud.google.com/find-a-partner/partner/sutherland" target="_blank">Google Cloud Partner Directory — Sutherland</a>
+    <a href="https://www.sutherlandglobal.com/products-x-platforms" target="_blank">Sutherland — AI-Powered Products &amp; Platforms</a>
+    <a href="https://www.sutherlandglobal.com/services/artificial-intelligence" target="_blank">Sutherland — Artificial Intelligence Services</a>
+    <a href="https://www.sutherlandglobal.com/industries/banking-and-financial-services" target="_blank">Sutherland — Banking &amp; Financial Services Practice</a>
+    <a href="https://tracxn.com/d/companies/sutherland/__bYiISfN6G43URGdQbWgmYi4RUTas5ETv1zX4rvmK3Os" target="_blank">Sutherland — Tracxn Company Profile</a>
+    <a href="https://www.ibm.com/case-studies/sutherland" target="_blank">IBM Case Study — Sutherland Global Services</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Obsidian <span>Ecosystem Radar</span></div>
+    <div class="footer-note">Generated March 13, 2026 &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; Not for distribution</div>
+  </div>
+
+</div>
+</body>
+</html>

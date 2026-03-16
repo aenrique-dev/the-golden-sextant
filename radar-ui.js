@@ -318,6 +318,413 @@ async function runSpotCheck() {
   await runPipeline([{ url, name, type: 'competitor' }], `Spot Check — ${url}`);
 }
 
+// ── PEOPLE SCOUT ──────────────────────────────────────────────────────────────
+
+const PERSONA_GROUPS = [
+  {
+    label: 'Economic Buyers',
+    titles: [
+      'Chief Information Security Officer (CISO)',
+      'VP of Security / Head of Security',
+      'Chief Technology Officer (CTO)',
+      'Chief Information Officer (CIO) / Chief Digital Officer'
+    ]
+  },
+  {
+    label: 'Technical Buyers',
+    titles: [
+      'Director of Security Architecture / Head of Security Engineering',
+      'SOC Manager / Director of Security Operations',
+      'Director of Identity & Access Management',
+      'Head of Threat Detection & Response / Incident Response Lead'
+    ]
+  },
+  {
+    label: 'AI, Risk & Compliance',
+    titles: [
+      'Head of AI Security / Director of AI Governance',
+      'Head of GRC / Director of Governance, Risk & Compliance',
+      'Head of Data & AI Platform / Head of Digital Transformation',
+      'Chief Financial Officer (if they own Ethics & Compliance / Risk Management)'
+    ]
+  }
+];
+
+const PEOPLE_SYSTEM_PROMPT = `You are an enterprise sales intelligence assistant for Obsidian Security.
+
+OBSIDIAN CONTEXT:
+- Obsidian Security: SaaS security platform — runtime identity misuse detection, AI Agent Governance, SaaS ITDR, Access & Privilege Control, SaaS Supply Chain Resilience, FSI Compliance (GLBA/NYDFS/DORA)
+- Primary buyer personas: CISO, VP Security, CTO/CIO, Director Security Architecture, SOC Manager, Director IAM, Head of AI Security, Head of GRC, Head of Digital Transformation
+
+You will be given a company name and a list of buyer persona titles to research. Using your knowledge, identify the real people currently (or most recently) in those roles at that company.
+
+Return ONLY a valid JSON array (no markdown fences) with this structure:
+[
+  {
+    "name": "<Full Name or null if not found>",
+    "title": "<Their actual title at the company>",
+    "persona_category": "economic_buyer|technical_buyer|risk_compliance|ai_data",
+    "persona_label": "<e.g. CISO, SOC Manager, Director IAM>",
+    "linkedin_slug": "<expected LinkedIn profile slug, e.g. john-doe-123 — your best guess based on their name, or null>",
+    "context": "<2-3 sentences: tenure, background, focus areas, notable context>",
+    "obsidian_angle": "<1 sentence: why this person is relevant to Obsidian — which pillar, which pain they feel>",
+    "confidence": "high|medium|low"
+  }
+]
+
+Rules:
+- Only include people you have reasonable confidence about. Set confidence accordingly.
+- If you cannot find anyone for a title, omit it — do not return placeholder rows.
+- Do not fabricate people. If unsure, set confidence to "low" and note uncertainty in context.
+- Prefer current employees over former. If someone recently left, note it in context.
+- Return [] if you truly cannot find anyone.`;
+
+async function callPeopleHaiku(companyName, group, pageContext, apiKey) {
+  const userMsg = `Company: ${companyName}
+
+${pageContext ? `Company leadership page content:\n${pageContext}\n\n` : ''}Research the following buyer persona titles at ${companyName} and identify the real people in those roles:
+
+${group.titles.map((t, i) => `${i+1}. ${t}`).join('\n')}
+
+Return a JSON array of people found. Only include people you have reasonable confidence about.`;
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2000,
+      system: PEOPLE_SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMsg }]
+    })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `API error ${resp.status}`);
+  }
+
+  const data = await resp.json();
+  const raw = data.content?.[0]?.text?.trim() || '[]';
+  const cleaned = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    return [];
+  }
+}
+
+const STACK_SYSTEM_PROMPT = `You are an enterprise sales intelligence assistant for Obsidian Security.
+
+OBSIDIAN CONTEXT:
+- Obsidian Security: SaaS security platform — runtime identity misuse detection, AI Agent Governance, SaaS ITDR, Access & Privilege Control, SaaS Supply Chain Resilience, FSI Compliance (GLBA/NYDFS/DORA)
+- Key competitors: AppOmni (SSPM), CrowdStrike Falcon Shield, Netskope, Zscaler, Okta, Microsoft Defender for Cloud Apps, Grip Security, Reco.AI, Valence Security
+- Key VAR partners: Optiv, GuidePoint Security, Presidio, WWT, EverSec, Myriad360, SHI, CDW, Trace3
+
+Using your knowledge, research the target company's:
+1. Security vendor stack (SIEM, EDR, CASB, IAM, SaaS security, cloud security tools they likely use)
+2. Which of Obsidian's VAR partners appear to have a relationship with this company
+3. Which competitors are deployed or mentioned publicly at this company
+
+Return ONLY a valid JSON object (no markdown fences):
+{
+  "stack": [
+    {
+      "vendor": "<vendor name>",
+      "category": "<SIEM|EDR|IAM|CASB|SaaS Security|Cloud Security|ITSM|Data Privacy|Compliance|Other>",
+      "confidence": "high|medium|low|not_detected",
+      "notes": "<1-2 sentences: what was found, why it matters for Obsidian positioning>",
+      "obsidian_relationship": "complement|competitor|neutral|greenfield"
+    }
+  ],
+  "partner_presence": [
+    {
+      "partner": "<VAR/MSSP name>",
+      "relationship": "<reseller|co-sell|managed-services|joint-customer|event|none-found>",
+      "confidence": "high|medium|low",
+      "notes": "<1 sentence>"
+    }
+  ],
+  "competitive_presence": [
+    {
+      "competitor": "<competitor name>",
+      "status": "confirmed|likely|not_detected",
+      "confidence": "high|medium|low",
+      "notes": "<1 sentence on what was found or not found>"
+    }
+  ],
+  "overall_competitive_posture": "<2-3 sentences: is this greenfield for SaaS security? What's the incumbent? What's the recommended Obsidian angle?>",
+  "recommended_frame": "<1 sentence: how to position Obsidian given what's in the stack>"
+}
+
+Rules:
+- Be honest about confidence. "not_detected" is a valid and useful finding.
+- Focus on security-relevant vendors, not generic SaaS tools.
+- A greenfield finding (no SSPM/SaaS security tool detected) is as valuable as a confirmed competitor.`;
+
+async function callStackHaiku(companyName, pageContext, apiKey) {
+  const userMsg = `Research the security vendor stack, VAR partner presence, and competitor footprint for: ${companyName}
+
+${pageContext ? `Company page context:\n${pageContext}\n\n` : ''}Based on your knowledge of this company, return the structured JSON with their security stack, which of Obsidian's VAR partners (Optiv, GuidePoint Security, Presidio, WWT, EverSec, Myriad360, SHI, CDW, Trace3) have relationships here, and which Obsidian competitors (AppOmni, CrowdStrike, Palo Alto, Wiz, Netskope, Zscaler, Microsoft Defender, Okta) are present.`;
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2000,
+      system: STACK_SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMsg }]
+    })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `API error ${resp.status}`);
+  }
+
+  const data = await resp.json();
+  const raw = data.content?.[0]?.text?.trim() || '{}';
+  const cleaned = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    return null;
+  }
+}
+
+async function runPeopleScout() {
+  const companyName = document.getElementById('people-company').value.trim();
+  const leadershipUrl = document.getElementById('people-url').value.trim();
+  if (!companyName) { alert('Please enter a company name.'); return; }
+
+  const key = getKey();
+  if (!key) { alert('Please save your API key first.'); return; }
+
+  const btn = document.getElementById('people-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:5px;"></span>Scouting…';
+
+  const card = document.getElementById('people-card');
+  const grid = document.getElementById('people-grid');
+  const statusEl = document.getElementById('people-status');
+  const labelEl = document.getElementById('people-company-label');
+
+  card.style.display = 'block';
+  labelEl.textContent = `— ${companyName}`;
+  statusEl.style.display = 'block';
+  statusEl.textContent = '⏳ Fetching leadership page…';
+  grid.innerHTML = '<div class="people-loading"><div class="people-spinner"></div>Running 3 parallel haiku agents — researching economic buyers, technical buyers, and AI/risk personas…</div>';
+
+  // Try to fetch leadership page for extra context
+  let pageContext = '';
+  if (leadershipUrl && leadershipUrl.startsWith('http')) {
+    try {
+      const proxyUrl = CORS_PROXY + encodeURIComponent(leadershipUrl);
+      const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+      if (resp.ok) {
+        const html = await resp.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        ['script','style','nav','footer','header','aside'].forEach(t => doc.querySelectorAll(t).forEach(e => e.remove()));
+        pageContext = (doc.body?.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 3000);
+      }
+    } catch {
+      // silently ignore — model knowledge is fallback
+    }
+  }
+
+  statusEl.textContent = `⏳ Running 3 parallel haiku agents for ${companyName}…`;
+
+  try {
+    // 4 parallel haiku calls — 3 persona groups + 1 stack/competitive intel
+    statusEl.textContent = `⏳ Running 4 parallel haiku agents — 3 persona groups + stack & competitive intel…`;
+    const [group1, group2, group3, stackData] = await Promise.all([
+      ...PERSONA_GROUPS.map(g => callPeopleHaiku(companyName, g, pageContext, key)),
+      callStackHaiku(companyName, pageContext, key)
+    ]);
+
+    const allPeople = [...(group1||[]), ...(group2||[]), ...(group3||[])];
+
+    if (allPeople.length === 0) {
+      grid.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;">No people found with sufficient confidence. Try adding a leadership page URL for better results.</div>';
+    } else {
+      renderPeople(allPeople, companyName);
+    }
+
+    if (stackData) {
+      renderStackIntel(stackData, companyName);
+    }
+
+    statusEl.textContent = `✓ ${allPeople.length} people · ${(stackData?.stack||[]).length} stack entries · ${(stackData?.competitive_presence||[]).length} competitive signals`;
+
+  } catch (e) {
+    grid.innerHTML = `<div class="error-banner">⚠ ${escHtml(e.message)}</div>`;
+    statusEl.textContent = '';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="user-search" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Scout People';
+    lucide.createIcons();
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function renderPeople(people, companyName) {
+  const grid = document.getElementById('people-grid');
+  grid.innerHTML = '';
+
+  const personaClass = {
+    economic_buyer:   'pb-econ',
+    technical_buyer:  'pb-tech',
+    risk_compliance:  'pb-risk',
+    ai_data:          'pb-ai',
+    it_platform:      'pb-it'
+  };
+  const personaLabel = {
+    economic_buyer:   'Economic Buyer',
+    technical_buyer:  'Technical Buyer',
+    risk_compliance:  'Risk & Compliance',
+    ai_data:          'AI & Data',
+    it_platform:      'IT / Platform'
+  };
+  const confidenceColor = { high: 'var(--green)', medium: 'var(--amber)', low: 'var(--muted)' };
+
+  // Sort: economic buyers first, then by confidence
+  const order = ['economic_buyer','technical_buyer','risk_compliance','ai_data','it_platform'];
+  const confidenceRank = { high: 0, medium: 1, low: 2 };
+  people.sort((a, b) => {
+    const oa = order.indexOf(a.persona_category);
+    const ob = order.indexOf(b.persona_category);
+    if (oa !== ob) return oa - ob;
+    return (confidenceRank[a.confidence] || 1) - (confidenceRank[b.confidence] || 1);
+  });
+
+  people.forEach(p => {
+    const isPrimary = p.persona_category === 'economic_buyer' && p.confidence === 'high';
+    const liUrl = p.linkedin_slug
+      ? `https://www.linkedin.com/in/${p.linkedin_slug}/`
+      : `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((p.name||'') + ' ' + companyName)}`;
+    const liLabel = p.linkedin_slug ? '↗ LinkedIn' : '↗ Search';
+
+    const card = document.createElement('div');
+    card.className = `person-card${isPrimary ? ' primary-contact' : ''}`;
+    card.innerHTML = `
+      <div class="person-top">
+        <div>
+          <div class="person-name">${escHtml(p.name || 'Name not confirmed')}</div>
+          <div class="person-title">${escHtml(p.title || p.persona_label || '')}</div>
+        </div>
+        <a href="${escHtml(liUrl)}" target="_blank" class="person-linkedin">${liLabel}</a>
+      </div>
+      ${p.context ? `<div class="person-context">${escHtml(p.context)}</div>` : ''}
+      ${p.obsidian_angle ? `<div class="person-angle">${escHtml(p.obsidian_angle)}</div>` : ''}
+      <div class="person-badges">
+        <span class="persona-badge ${personaClass[p.persona_category] || 'pb-econ'}">${personaLabel[p.persona_category] || p.persona_category}</span>
+        <span class="persona-badge" style="background:var(--bg);color:${confidenceColor[p.confidence]};border:1px solid ${confidenceColor[p.confidence]};">
+          ${p.confidence === 'high' ? '● ' : p.confidence === 'medium' ? '◐ ' : '○ '}${(p.confidence||'').charAt(0).toUpperCase() + (p.confidence||'').slice(1)} confidence
+        </span>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  lucide.createIcons();
+}
+
+function renderStackIntel(data, companyName) {
+  // Inject a stack section after the people grid inside people-card
+  const card = document.getElementById('people-card');
+  const existingStack = document.getElementById('stack-intel-section');
+  if (existingStack) existingStack.remove();
+
+  const section = document.createElement('div');
+  section.id = 'stack-intel-section';
+  section.style.cssText = 'margin-top:20px; padding-top:16px; border-top:1px solid var(--border);';
+
+  const confIcon = { high: '●', medium: '◐', low: '○', not_detected: '○', confirmed: '●', likely: '◐', none_found: '○' };
+  const confColor = { high: 'var(--green)', medium: 'var(--amber)', low: 'var(--muted)', not_detected: 'var(--muted)', confirmed: 'var(--green)', likely: 'var(--amber)', none_found: 'var(--muted)' };
+  const relColor  = { complement: '#d1fae5', competitor: '#fee2e2', neutral: '#f3f4f6', greenfield: '#ecfdf5' };
+  const relText   = { complement: '#065f46', competitor: '#991b1b', neutral: '#374151', greenfield: '#059669' };
+
+  const stackRows = (data.stack || []).map(s => `
+    <tr>
+      <td style="font-weight:600;color:var(--navy);">${escHtml(s.vendor)}</td>
+      <td style="color:var(--muted);font-size:11px;">${escHtml(s.category)}</td>
+      <td style="font-size:11px;font-weight:700;color:${confColor[s.confidence]||'var(--muted)'};">${confIcon[s.confidence]||'○'} ${escHtml(s.confidence||'')}</td>
+      <td style="font-size:11px;color:var(--text);">${escHtml(s.notes||'')}</td>
+      <td><span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:${relColor[s.obsidian_relationship]||'#f3f4f6'};color:${relText[s.obsidian_relationship]||'#374151'};">${escHtml(s.obsidian_relationship||'')}</span></td>
+    </tr>`).join('');
+
+  const partnerRows = (data.partner_presence || []).map(p => `
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:12px;color:${p.relationship === 'none-found' ? 'var(--muted)' : 'var(--green)'};flex-shrink:0;">${p.relationship === 'none-found' ? '—' : '✓'}</span>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--navy);">${escHtml(p.partner)}</div>
+        <div style="font-size:11px;color:var(--muted);">${escHtml(p.relationship)} · ${escHtml(p.confidence)} confidence</div>
+        ${p.notes ? `<div style="font-size:11px;color:var(--text);margin-top:2px;">${escHtml(p.notes)}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  const competitorRows = (data.competitive_presence || []).map(c => {
+    const icon = c.status === 'confirmed' ? '🔴' : c.status === 'likely' ? '🟡' : '🟢';
+    return `
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:14px;flex-shrink:0;">${icon}</span>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--navy);">${escHtml(c.competitor)}</div>
+        <div style="font-size:11px;color:var(--muted);">${escHtml(c.status)} · ${escHtml(c.confidence)} confidence</div>
+        ${c.notes ? `<div style="font-size:11px;color:var(--text);margin-top:2px;">${escHtml(c.notes)}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  section.innerHTML = `
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Stack &amp; Competitive Intel — ${escHtml(companyName)}</div>
+
+    ${data.overall_competitive_posture ? `
+    <div style="background:rgba(4,49,182,0.05);border:1px solid rgba(4,49,182,0.15);border-radius:6px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text);line-height:1.55;">
+      <strong style="color:var(--navy);">Competitive Posture:</strong> ${escHtml(data.overall_competitive_posture)}
+      ${data.recommended_frame ? `<div style="margin-top:6px;color:var(--accent);font-weight:600;">→ ${escHtml(data.recommended_frame)}</div>` : ''}
+    </div>` : ''}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:8px;">Security Vendor Stack</div>
+        ${stackRows ? `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:var(--navy);">
+            <th style="padding:6px 10px;color:#fff;font-size:10px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Vendor</th>
+            <th style="padding:6px 10px;color:#fff;font-size:10px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Category</th>
+            <th style="padding:6px 10px;color:#fff;font-size:10px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Confidence</th>
+            <th style="padding:6px 10px;color:#fff;font-size:10px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Notes</th>
+            <th style="padding:6px 10px;color:#fff;font-size:10px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">vs Obsidian</th>
+          </tr></thead>
+          <tbody>${stackRows}</tbody>
+        </table>` : '<div style="color:var(--muted);font-size:12px;">No stack data found.</div>'}
+      </div>
+
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:8px;">VAR Partner Presence</div>
+        <div style="margin-bottom:14px;">${partnerRows || '<div style="font-size:12px;color:var(--muted);">No partner relationships detected.</div>'}</div>
+
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:8px;margin-top:14px;">Competitor Presence</div>
+        <div>${competitorRows || '<div style="font-size:12px;color:var(--muted);">No competitive presence detected.</div>'}</div>
+      </div>
+
+    </div>`;
+
+  card.appendChild(section);
+  lucide.createIcons();
+}
+
 // ── RENDER RESULTS ────────────────────────────────────────────────────────────
 function signalTypeLabel(t) {
   return {

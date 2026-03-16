@@ -83,6 +83,12 @@
       <input class="spot-input" id="spot-url" type="url" placeholder="Spot check — paste any URL…" />
       <button class="btn btn-secondary" id="spot-btn" onclick="runSpotCheck()">Check URL</button>
     </div>
+    <div class="controls-row" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);">
+      <i data-lucide="users" style="width:14px;height:14px;color:var(--sky);flex-shrink:0;"></i>
+      <input class="spot-input" id="people-company" type="text" placeholder="Scout people — enter company name…" />
+      <input class="spot-input" id="people-url" type="url" placeholder="Leadership page URL (optional)…" style="flex:1.2;" />
+      <button class="btn btn-secondary" id="people-btn" onclick="runPeopleScout()"><i data-lucide="user-search" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Scout People</button>
+    </div>
     <p class="watchlist-summary" id="watchlist-summary"></p>
   </div>
 
@@ -96,6 +102,16 @@
       <div class="stage-pill" id="stage-activate"><span class="stage-icon">⚡</span>Activate</div>
     </div>
     <div class="log-box" id="log-box"></div>
+  </div>
+
+  <!-- PEOPLE RESULTS -->
+  <div class="card" id="people-card" style="display:none;">
+    <div class="card-title">
+      <span class="dot"></span>Key People
+      <span id="people-company-label" style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px;"></span>
+    </div>
+    <div id="people-status" style="font-size:12px;color:var(--muted);margin-bottom:12px;display:none;"></div>
+    <div class="people-grid" id="people-grid"></div>
   </div>
 
   <!-- RESULTS -->
