@@ -89,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const key = localStorage.getItem('er_api_key');
   if (key) {
     showKeySet();
+  } else {
+    document.getElementById('controls-card').style.display = 'block';
   }
   updateWatchlistSummary();
   lucide.createIcons();
@@ -1221,4 +1223,169 @@ function transformDigest(raw) {
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── GENERATE BRIEF ────────────────────────────────────────────────────────────
+
+// Demo hotlinks — company name fragments map to pre-built brief paths
+const BRIEF_DEMOS = {
+  'sutherland': 'data/briefs/sutherland-global-scout-brief.html',
+};
+
+async function generateBrief() {
+  const input = document.getElementById('brief-company');
+  const btn   = document.getElementById('brief-btn');
+  const company = (input.value || '').trim();
+  if (!company) { input.focus(); return; }
+
+  // Check for demo hotlink first
+  const key = Object.keys(BRIEF_DEMOS).find(k => company.toLowerCase().includes(k));
+  if (key) {
+    window.open(BRIEF_DEMOS[key], '_blank');
+    return;
+  }
+
+  // Live generation — requires API key
+  const apiKey = localStorage.getItem('radar_api_key');
+  if (!apiKey) {
+    alert('Add your Anthropic API key first (API Configuration above).');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Researching…';
+
+  try {
+    const html = await _buildBriefHtml(apiKey, company);
+    const blob = new Blob([html], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  } catch (e) {
+    alert('Brief generation failed: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="file-text" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Generate Brief';
+    lucide.createIcons();
+  }
+}
+
+async function _callHaikuBrief(apiKey, system, userMsg) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2048,
+      system,
+      messages: [{ role: 'user', content: userMsg }],
+    }),
+  });
+  const data = await resp.json();
+  const raw  = (data.content?.[0]?.text || '{}').replace(/```json|```/g, '').trim();
+  try { return JSON.parse(raw); } catch { return {}; }
+}
+
+async function _buildBriefHtml(apiKey, company) {
+  const OBS = `Obsidian Security is a SaaS security platform built on a knowledge graph correlating identity, access, activity, and posture across SaaS apps. GTM pillars: Access & Privilege Control, SaaS Supply Chain Resilience, SaaS Identity Threat Defense, AI Agent Governance, Compliance (GLBA/NYDFS/DORA). VAR partners: Optiv, GuidePoint, Presidio, WWT, EverSec. Primary buyers: CISO, SOC Manager, GRC, IAM, IR, App Owners.`;
+
+  const OVERVIEW_SYS = `You are a sales intelligence analyst at Obsidian Security. ${OBS}\nFrom your knowledge of the company, extract structured intelligence.\nReturn JSON only:\n{"company_type":"...","website":"https://...","snapshot":[{"label":"...","value":"..."}],"signals":[{"title":"...","desc":"...","obsidian_angle":"...","tags":["hot"|"new"|"watch"]}]}\nReturn 3-6 signals focused on AI, SaaS security, identity, cloud, compliance. Snapshot: Company Type, Size, Revenue (est.), Key Verticals, HQ, Cloud/Tech Partner.`;
+
+  const PEOPLE_ECON_SYS = `You are a sales intelligence analyst at Obsidian Security. ${OBS}\nIdentify named economic buyers at the company (CISO, CIO, CFO, VP Security).\nReturn JSON array only:\n[{"name":"...","title":"...","context":"...","linkedin":"https://linkedin.com/in/... or null","persona":"econ","obsidian_angle":"...","is_primary":true}]\nOnly include people you can name with confidence. Return [] if unsure.`;
+
+  const PEOPLE_TECH_SYS = `You are a sales intelligence analyst at Obsidian Security. ${OBS}\nIdentify named technical buyers at the company (SOC Director, IAM Director, Security Engineering, Incident Response).\nReturn JSON array only:\n[{"name":"...","title":"...","context":"...","linkedin":"https://linkedin.com/in/... or null","persona":"tech","obsidian_angle":"...","is_primary":false}]\nOnly include people you can name with confidence. Return [] if unsure.`;
+
+  const STACK_SYS = `You are a competitive intelligence analyst at Obsidian Security. ${OBS}\nCompetitors: AppOmni, Reco.AI, CrowdStrike Falcon Shield, Microsoft Defender for Cloud Apps, Grip Security, Palo Alto Prisma, Zscaler, Netskope.\nVAR partners: Optiv, GuidePoint, Presidio, WWT, EverSec.\nReturn JSON only:\n{"vendor_stack":[{"vendor":"...","category":"...","confidence":"high|medium|low|greenfield","notes":"...","obsidian_note":"..."}],"pillar_alignment":[{"pillar":"...","stars":1-5,"rationale":"..."}],"partner_presence":{"vars_found":[],"status":"covered|partial|none_detected","notes":"...","action_note":"..."},"competitor_presence":[{"name":"...","status":"entrenched|present|not_detected","notes":"..."}]}\nAlways include all 5 pillars. If no SSPM/CASB found, add greenfield row.`;
+
+  // 4 parallel Haiku agents
+  const [overview, econPeople, techPeople, stack] = await Promise.all([
+    _callHaikuBrief(apiKey, OVERVIEW_SYS, `Company: ${company}`),
+    _callHaikuBrief(apiKey, PEOPLE_ECON_SYS, `Company: ${company}`),
+    _callHaikuBrief(apiKey, PEOPLE_TECH_SYS, `Company: ${company}`),
+    _callHaikuBrief(apiKey, STACK_SYS, `Company: ${company}`),
+  ]);
+
+  const allPeople = [...(Array.isArray(econPeople) ? econPeople : []), ...(Array.isArray(techPeople) ? techPeople : [])];
+
+  // Sonnet synthesis
+  const SYNTH_SYS = `You are a senior GTM strategist at Obsidian Security. ${OBS}\nSynthesize research into a verdict and actions.\nReturn JSON only:\n{"verdict_priority":"High Potential|Medium Potential|Low Potential|Watch List","verdict_headline":"...","verdict_body":"2-3 sentences on best entry point","recommended_actions":["action 1","action 2","action 3","action 4","action 5"],"keywords":["kw1","kw2"]}`;
+
+  const synthResp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1024,
+      system: SYNTH_SYS,
+      messages: [{ role: 'user', content: `Company: ${company}\n\n${JSON.stringify({ overview, people: allPeople, stack })}` }],
+    }),
+  });
+  const synthData = await synthResp.json();
+  const synthRaw  = (synthData.content?.[0]?.text || '{}').replace(/```json|```/g, '').trim();
+  let synthesis = {};
+  try { synthesis = JSON.parse(synthRaw); } catch {}
+
+  return _renderBriefHtml(company, overview, allPeople, stack, synthesis);
+}
+
+function _renderBriefHtml(company, overview, people, stack, synthesis) {
+  const now = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const e = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const stars = n => '★'.repeat(Math.max(0,Math.min(5,n||0))) + '<span style="color:#e0e0e0;">★</span>'.repeat(5-Math.max(0,Math.min(5,n||0)));
+  const confBadge = c => ({ high:'<span style="color:#059669;font-weight:700;">● High</span>', medium:'<span style="color:#FF9D03;font-weight:700;">◐ Medium</span>', low:'<span style="color:#5a5a5a;font-weight:700;">○ Low</span>', greenfield:'<span style="color:#059669;font-weight:700;">● Greenfield</span>' })[String(c).toLowerCase()] || e(c);
+  const verdictIcon = p => ({ 'high potential':'⚡','medium potential':'🔍','watch list':'👀' })[String(p||'').toLowerCase()] || '📋';
+
+  const snapshotHtml = (overview.snapshot||[]).map(i=>`<div style="background:#F8F8F8;border:1px solid #e0e0e0;border-radius:6px;padding:12px 14px;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#5a5a5a;margin-bottom:4px;">${e(i.label)}</div><div style="font-size:13px;font-weight:600;color:#131313;">${e(i.value)}</div></div>`).join('');
+
+  const signalsHtml = (overview.signals||[]).map((s,i)=>{
+    const tags = (s.tags||[]).map(t=>t==='hot'?'<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;margin-right:4px;background:#fef3c7;color:#92400e;">🔥 Hot</span>':t==='new'?'<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;margin-right:4px;background:#d1fae5;color:#065f46;">New</span>':'<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;margin-right:4px;background:#ede9fe;color:#5b21b6;">Watch</span>').join('');
+    return `<div style="border:1px solid #e0e0e0;border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:flex-start;"><div style="background:#5565E2;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">${i+1}</div><div><div style="font-size:13px;font-weight:700;color:#0B173B;margin-bottom:3px;">${e(s.title)}</div><div style="font-size:12px;color:#131313;margin-bottom:4px;line-height:1.55;">${e(s.desc)}</div><div style="font-size:11px;color:#5a5a5a;padding-left:8px;border-left:2px solid #61CEF4;line-height:1.5;"><strong style="color:#5565E2;">Obsidian angle:</strong> ${e(s.obsidian_angle)}</div>${tags}</div></div>`;
+  }).join('');
+
+  const pillarsHtml = (stack.pillar_alignment||[]).map(p=>`<tr><td><strong>${e(p.pillar)}</strong></td><td style="color:#FF9D03;">${stars(p.stars)}</td><td>${e(p.rationale)}</td></tr>`).join('');
+
+  const personaBadge = persona => ({ econ:'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#dbeafe;color:#1e40af;">Economic Buyer</span>', tech:'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#d1fae5;color:#065f46;">Technical Buyer</span>', risk:'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#ede9fe;color:#5b21b6;">GRC / Compliance</span>', ai:'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#fef3c7;color:#92400e;">AI & ML Security</span>' })[persona] || '';
+  const peopleHtml = people.length ? people.map(p=>`<div style="border:1px solid ${p.is_primary?'#5565E2':'#e0e0e0'};border-radius:6px;padding:12px 14px;${p.is_primary?'background:rgba(85,101,226,0.04);':''}"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;"><div><div style="font-size:13px;font-weight:700;color:#0B173B;">${e(p.name)}</div><div style="font-size:11px;color:#5a5a5a;">${e(p.title)}</div></div>${p.linkedin?`<a href="${e(p.linkedin)}" target="_blank" style="font-size:10px;color:#5565E2;text-decoration:none;font-weight:500;">↗ LinkedIn</a>`:''}</div><div style="font-size:11px;color:#131313;line-height:1.5;">${e(p.context)}</div><div style="font-size:11px;color:#5565E2;margin-top:4px;">${e(p.obsidian_angle)}</div><div style="margin-top:6px;">${personaBadge(p.persona)}</div></div>`).join('') : '<p style="font-size:12px;color:#5a5a5a;">No named contacts identified. Run a LinkedIn search for this company.</p>';
+
+  const stackHtml = (stack.vendor_stack||[]).map(v=>`<tr><td><strong>${e(v.vendor)}</strong></td><td>${e(v.category)}</td><td>${confBadge(v.confidence)}</td><td style="font-size:11px;">${e(v.notes)}${v.obsidian_note?` <strong>${e(v.obsidian_note)}</strong>`:''}</td></tr>`).join('');
+
+  const pp = stack.partner_presence || {};
+  const varsFound = pp.vars_found || [];
+  const partnerHtml = `<div style="border:1px solid #e0e0e0;border-radius:6px;padding:14px 16px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#5a5a5a;margin-bottom:10px;">VAR / Partner Presence</div><div style="font-size:13px;font-weight:700;color:#0B173B;">${varsFound.length ? 'Covered by: '+varsFound.map(e).join(', ') : 'No named VAR documented publicly'}</div><div style="font-size:12px;color:#131313;margin-top:3px;">${e(pp.notes)}</div>${pp.action_note?`<div style="font-size:11px;color:#5565E2;background:rgba(4,49,182,0.06);border-left:2px solid #5565E2;padding:5px 8px;margin-top:6px;border-radius:0 4px 4px 0;"><strong>What this means:</strong> ${e(pp.action_note)}</div>`:''}</div>`;
+
+  const compHtml = `<div style="border:1px solid #e0e0e0;border-radius:6px;padding:14px 16px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#5a5a5a;margin-bottom:10px;">Competitor Presence</div>${(stack.competitor_presence||[]).map(c=>`<div style="display:flex;gap:8px;margin-bottom:8px;"><span>${{entrenched:'🔴',present:'🟡',not_detected:'🟢'}[c.status]||'🟡'}</span><div><div style="font-size:12px;font-weight:700;color:#0B173B;">${e(c.name)}</div><div style="font-size:11px;color:#5a5a5a;">${e(c.notes)}</div></div></div>`).join('')}</div>`;
+
+  const actionsHtml = (synthesis.recommended_actions||[]).map(a=>`<li style="font-size:12px;color:#131313;margin-bottom:4px;line-height:1.5;">${e(a)}</li>`).join('');
+  const keywordsHtml = (synthesis.keywords||[]).map(k=>`<span style="background:#F8F8F8;border:1px solid #e0e0e0;color:#0B173B;font-size:11px;font-weight:500;padding:4px 10px;border-radius:14px;">${e(k)}</span>`).join('');
+
+  const sectionTitle = label => `<div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#5565E2;margin-bottom:10px;margin-top:24px;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">${label}</div>`;
+
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>${e(company)} — Scout Brief | Obsidian Ecosystem Radar</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:#F8F8F8;color:#131313;font-size:13px;line-height:1.6;}.page{max-width:860px;margin:0 auto;padding:40px 48px 60px;background:#fff;min-height:100vh;}table{width:100%;border-collapse:collapse;font-size:12px;}th{background:#0B173B;color:#fff;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:8px 12px;text-align:left;}td{padding:9px 12px;border-bottom:1px solid #e0e0e0;vertical-align:top;}tr:last-child td{border-bottom:none;}tr:nth-child(even) td{background:#F8F8F8;}@media print{body{background:#fff;}.page{padding:24px 32px 40px;min-height:unset;max-width:100%;}}</style></head><body><div class="page">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:20px;border-bottom:2px solid #0B173B;margin-bottom:24px;">
+  <div><div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#5565E2;margin-bottom:4px;">Obsidian Ecosystem Radar &nbsp;·&nbsp; Scout Brief</div><h1 style="font-size:26px;font-weight:800;color:#0B173B;">${e(company)}</h1></div>
+  <div style="text-align:right;font-size:11px;color:#5a5a5a;line-height:1.8;"><div><strong>Date</strong> &nbsp;${e(now)}</div><div><strong>Category</strong> &nbsp;${e(overview.company_type||'')}</div><div><strong>Status</strong> &nbsp;Prospect</div>${overview.website?`<div><strong>Website</strong> &nbsp;<a href="${e(overview.website)}" target="_blank" style="color:#5565E2;">${e(overview.website.replace(/https?:\/\//,'').replace(/\/$/,''))}</a></div>`:''}</div>
+</div>
+<div style="background:linear-gradient(135deg,#0B173B 0%,#1a2d6b 100%);color:#fff;border-radius:8px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;">
+  <div style="font-size:28px;flex-shrink:0;">${verdictIcon(synthesis.verdict_priority)}</div>
+  <div><div style="font-size:14px;font-weight:700;color:#FF9D03;margin-bottom:3px;">${e(synthesis.verdict_headline)}</div><p style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.5;">${e(synthesis.verdict_body)}</p></div>
+</div>
+${sectionTitle('Company Snapshot')}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:4px;">${snapshotHtml}</div>
+${sectionTitle('Ecosystem Signals')}<div style="display:flex;flex-direction:column;gap:10px;">${signalsHtml}</div>
+${sectionTitle('Obsidian Pillar Alignment')}<table><thead><tr><th>Pillar</th><th>Fit</th><th>Rationale</th></tr></thead><tbody>${pillarsHtml}</tbody></table>
+${sectionTitle('Key People to Know')}<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">${peopleHtml}</div>
+${sectionTitle('Security Vendor Stack')}<table><thead><tr><th>Vendor / Tool</th><th>Category</th><th>Confidence</th><th>Notes</th></tr></thead><tbody>${stackHtml}</tbody></table>
+${sectionTitle('Partner & Competitive Presence')}<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">${partnerHtml}${compHtml}</div>
+${keywordsHtml ? sectionTitle('Keywords to Use')+'<div style="display:flex;flex-wrap:wrap;gap:7px;">'+keywordsHtml+'</div>' : ''}
+${actionsHtml ? sectionTitle('Recommended Actions')+'<div style="background:#fffbeb;border:1px solid #FF9D03;border-radius:6px;padding:14px 16px;"><div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:6px;">⚡ Recommended Actions</div><ul style="margin:0;padding-left:18px;">${actionsHtml}</ul></div>' : ''}
+<div style="margin-top:32px;padding-top:14px;border-top:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:11px;font-weight:700;color:#0B173B;">Obsidian <span style="color:#5565E2;">Ecosystem Radar</span></div><div style="font-size:10px;color:#5a5a5a;">Generated ${e(now)} &nbsp;·&nbsp; Internal Use Only</div></div>
+</div></body></html>`;
 }

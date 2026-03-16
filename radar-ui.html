@@ -89,6 +89,11 @@
       <input class="spot-input" id="people-url" type="url" placeholder="Leadership page URL (optional)…" style="flex:1.2;" />
       <button class="btn btn-secondary" id="people-btn" onclick="runPeopleScout()"><i data-lucide="user-search" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Scout People</button>
     </div>
+    <div class="controls-row" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);">
+      <i data-lucide="file-text" style="width:14px;height:14px;color:var(--amber);flex-shrink:0;"></i>
+      <input class="spot-input" id="brief-company" type="text" placeholder="Generate scout brief — enter company name…" />
+      <button class="btn btn-secondary" id="brief-btn" onclick="generateBrief()" style="border-color:var(--amber);color:var(--amber);"><i data-lucide="file-text" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;"></i>Generate Brief</button>
+    </div>
     <p class="watchlist-summary" id="watchlist-summary"></p>
   </div>
 
