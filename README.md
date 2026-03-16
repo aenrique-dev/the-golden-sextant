@@ -1,36 +1,82 @@
-# The Partnership Protocol
-### Partner Signal-to-Pipeline Agent
+# Ecosystem Radar
+### Account Intelligence & Ecosystem Signal Engine
 **AI Hackathon 2026**
 
 ---
 
 ## What It Does
 
-The Partnership Protocol runs parallel AI research agents across competitor and partner websites, extracts meaningful ecosystem signals, scores them by strategic importance, and generates concrete next actions for the Partnerships team.
+Ecosystem Radar gives every rep on the account team the intelligence they need to walk into any meeting prepared — without spending hours on research. It runs parallel AI agents to scan competitor websites, partner news, and industry sources, and also deep-dives any company on demand to surface the people, stack, and signals that matter before a call.
 
-**Before:** Partner managers manually scan 25+ sources. Most signals get missed. None become pipeline actions.
+**Before:** AEs piece together pre-call intel from browser tabs and memory. Partner managers manually scan dozens of sources hoping not to miss something critical. TAMs have no systematic signal when an account is ready to expand.
 
-**After:** A ranked daily digest — 5–7 signals with context, strategic implications, and ready-to-send partner outreach drafts.
+**After:** A ready-to-use brief — confirmed security stack, named buyer contacts with LinkedIn links, greenfield coverage gaps, ecosystem moves, and a ready-to-send outreach — for any account or partner, in under 90 seconds.
+
+---
+
+## Two Modes
+
+### 1. Account Scout Brief — `brief.py`
+Deep-dive any company on demand. Fires 4 parallel Haiku agents to research the company's overview, buyer personas, security stack, and competitive/partner presence. Synthesizes with Sonnet. Outputs a print-ready HTML brief with live links.
+
+```bash
+python brief.py "Snowflake"
+python brief.py "Sutherland Global" --url https://www.sutherlandglobal.com --open
+```
+
+Output: `data/briefs/[company-slug]-scout-brief.html`
+
+**What's in the brief:**
+- Verdict & engagement priority (High / Medium / Watch List)
+- Company snapshot — size, revenue, verticals, cloud platform
+- 5–7 ecosystem signals with Obsidian-specific angles
+- Obsidian pillar alignment scored 1–5
+- Named buyer contacts — economic, technical, GRC, AI — with LinkedIn links
+- Confirmed security vendor stack with confidence levels
+- Greenfield gap detection (no SSPM/CASB = direct Obsidian entry)
+- VAR partner coverage status + competitor presence map
+- Recommended actions and conversation keyword cloud
+
+---
+
+### 2. Daily Ecosystem Digest — `run.py`
+Scans the full watchlist of 60+ competitor, partner, media, and analyst pages. Extracts signals, scores them by urgency, and generates action-ready partner outreach for the top 5–7 findings.
+
+```bash
+python run.py
+python run.py --dry-run --print markdown
+```
+
+Output: `data/digests/digest-YYYY-MM-DD-{run_id}.md` + `.json`
 
 ---
 
 ## Architecture
 
 ```
-run.py
-  └── orchestrator.py          ← main loop, coordinates all agents
-        ├── agents/scout.py    ← SCOUT: parallel web fetcher (Haiku)
-        ├── agents/interpreter.py  ← INTERPRETER: signal extractor (Haiku)
-        ├── agents/ranker.py   ← RANKER: priority scorer (Haiku)
-        ├── agents/activator.py    ← ACTIVATOR: action generator (Sonnet)
-        ├── memory/store.py    ← STATE: dedup + change detection (JSON)
-        ├── models/schemas.py  ← DATA MODELS: Signal, Digest, ActionItem
-        └── output/formatter.py    ← OUTPUT: Markdown, Slack, Email, JSON
+brief.py                          ← Account Scout Brief (on-demand)
+  └── agents/company_brief.py     ← 4 parallel Haiku agents + Sonnet synthesis
+        ├── Overview agent         ← company snapshot + signals (Haiku)
+        ├── Economic buyers agent  ← CISO, CIO, CFO personas (Haiku)
+        ├── Technical buyers agent ← SecOps, IAM, SOC personas (Haiku)
+        └── Stack agent            ← vendor stack + competitive (Haiku)
+              └── Sonnet synthesis ← verdict + actions + keywords
+
+run.py                            ← Daily Ecosystem Digest (scheduled)
+  └── orchestrator.py             ← main loop, coordinates all agents
+        ├── agents/scout.py       ← SCOUT: parallel web fetcher (Haiku)
+        ├── agents/search_scout.py ← SEARCH SCOUT: DuckDuckGo discovery (Haiku)
+        ├── agents/interpreter.py ← INTERPRETER: signal extractor (Haiku)
+        ├── agents/ranker.py      ← RANKER: priority scorer (Haiku)
+        ├── agents/activator.py   ← ACTIVATOR: action generator (Sonnet)
+        ├── memory/store.py       ← STATE: dedup + change detection
+        ├── models/schemas.py     ← DATA MODELS: Signal, Digest, ActionItem
+        └── output/formatter.py   ← OUTPUT: Markdown, Slack, Email, JSON, PPTX
 ```
 
 **Model routing:**
-- `claude-haiku-4-5-20251001` — Scout, Interpreter, Ranker (cheap + fast)
-- `claude-sonnet-4-6` — Activator (strategic judgment, outreach drafts)
+- `claude-haiku-4-5-20251001` — all research agents (fast + cost-efficient)
+- `claude-sonnet-4-6` — Activator + Brief synthesis (strategic judgment)
 
 ---
 
@@ -46,40 +92,41 @@ pip install -r requirements.txt
 export ANTHROPIC_API_KEY=sk-ant-your-key-here
 ```
 
-### 3. Run a dry run (no API key needed — uses mock data)
+### 3. Generate a scout brief for any company
 ```bash
-python run.py --dry-run --print markdown
+python brief.py "Snowflake" --open
 ```
 
-### 4. Run the real pipeline
+### 4. Run the daily ecosystem digest
 ```bash
 python run.py
 ```
 
-### 5. See all options
+### 5. Test with mock data (no API key needed)
 ```bash
-python run.py --help
+python run.py --dry-run --print markdown
 ```
 
 ---
 
-## Output Files
+## Who Uses This
 
-All digests are saved to `data/digests/`:
-- `digest-YYYY-MM-DD-{run_id}.md` — Markdown digest
-- `digest-YYYY-MM-DD-{run_id}.json` — Full structured JSON (for dashboards/APIs)
-
-State is stored in `data/radar_state.json` for deduplication across runs.
+| Role | How They Use It |
+|------|----------------|
+| **Account Executive** | Pre-call brief on any prospect — stack, contacts, entry angle — before the first meeting |
+| **TAM / CSM** | Expansion signals and account intelligence for renewal and upsell conversations |
+| **Partner Manager** | Daily digest of ecosystem moves — who added what, who's competing, what to act on |
+| **Sales Leadership** | Territory and account prioritization based on competitive and timing signals |
 
 ---
 
 ## Configuration
 
 Edit `config/watchlist.json` to:
-- Add/remove competitor domains and pages
-- Add/remove partner domains and pages
-- Add/remove marketplace sources
-- Update market trend keywords
+- Add competitor domains and pages to monitor
+- Add partner domains and pages to monitor
+- Add media, analyst, and channel news sources
+- Update buyer persona titles and market trend keywords
 
 ---
 
@@ -87,56 +134,55 @@ Edit `config/watchlist.json` to:
 
 ```
 05_EcosystemRadar/
-├── README.md                    ← you are here
+├── README.md
 ├── requirements.txt
-├── run.py                       ← entry point
+├── run.py                        ← daily digest runner
+├── brief.py                      ← on-demand scout brief runner
+├── radar-ui.html                 ← browser-based live dashboard
 ├── config/
-│   └── watchlist.json           ← competitor + partner watchlist
+│   └── watchlist.json            ← competitor + partner + source watchlist
 ├── src/
-│   ├── orchestrator.py          ← main pipeline loop
+│   ├── orchestrator.py
 │   ├── agents/
-│   │   ├── scout.py             ← web fetcher (parallel, Haiku)
-│   │   ├── interpreter.py       ← signal extractor (Haiku)
-│   │   ├── ranker.py            ← priority scorer (Haiku)
-│   │   └── activator.py        ← action generator (Sonnet)
+│   │   ├── company_brief.py      ← scout brief agent (4 parallel Haiku + Sonnet)
+│   │   ├── scout.py
+│   │   ├── search_scout.py
+│   │   ├── interpreter.py
+│   │   ├── ranker.py
+│   │   └── activator.py
 │   ├── memory/
-│   │   └── store.py             ← state / dedup layer
+│   │   └── store.py
 │   ├── models/
-│   │   └── schemas.py           ← data models
+│   │   └── schemas.py
 │   └── output/
-│       └── formatter.py         ← markdown / email / slack / json
-├── sample_output/
-│   └── example-digest.md        ← example output for demo
-└── data/                        ← created at runtime
-    ├── digests/                 ← output files
-    └── radar_state.json         ← persistent state
+│       ├── formatter.py
+│       └── pptx_formatter.py
+├── data/
+│   ├── briefs/                   ← scout brief HTML output
+│   └── digests/                  ← daily digest output
+└── sample_output/
+    └── example-digest.md
 ```
 
 ---
 
 ## Demo Script (Hackathon)
 
-1. Open `radar-ui.html` — show the live dashboard with real signals
-2. Run `python run.py --dry-run --print markdown` — show the pipeline executing
-3. Walk through the four agent stages: Scout → Interpreter → Ranker → Activator
-4. Point to `config/watchlist.json` — "this is all it needs to get started"
-5. Show how to add a new competitor: one JSON entry, done
-6. Close with the roadmap: CRM integration → account mapping → auto-outreach
+1. Open `radar-ui.html` — show the live dashboard with real digest signals
+2. Run `python brief.py "Snowflake" --open` — watch 4 agents fire in parallel, open the brief
+3. Walk through the brief: confirmed stack, named contacts, greenfield gap, recommended actions
+4. Switch to `python run.py --dry-run --print markdown` — show the daily digest pipeline
+5. Point to `config/watchlist.json` — "this is all it takes to monitor 60+ sources"
+6. Close with the roadmap: CRM integration → auto-outreach → buying committee mapping
 
 ---
 
 ## Deployment
 
-The pipeline is a Python script designed to run on a schedule and write digest JSON to object storage. The UI fetches the latest digest from a public URL.
+The daily digest is a Python script designed to run on a schedule and write JSON to object storage. The UI fetches the latest digest from a public URL.
 
 ### Recommended: GitLab CI + Cloudflare R2
 
-**How it works:**
-1. GitLab scheduled pipeline runs `python run.py` daily (e.g. 7am)
-2. Output JSON is uploaded to a Cloudflare R2 bucket
-3. `radar-ui.html` fetches the digest from the R2 public URL
-
-**`.gitlab-ci.yml` skeleton:**
 ```yaml
 radar-daily-run:
   image: python:3.11-slim
@@ -154,29 +200,16 @@ radar-daily-run:
     ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
     CF_API_TOKEN: $CF_API_TOKEN
     CF_ACCOUNT_ID: $CF_ACCOUNT_ID
-    R2_BUCKET: "partnership-protocol"
-```
-
-**Required CI/CD variables** (set in GitLab → Settings → CI/CD → Variables):
-- `ANTHROPIC_API_KEY` — Anthropic API key
-- `CF_API_TOKEN` — Cloudflare API token with R2 write access
-- `CF_ACCOUNT_ID` — Cloudflare account ID
-- `R2_BUCKET` — R2 bucket name
-
-**Then update the UI** to fetch from R2 instead of local file:
-```javascript
-// In radar-ui.html, replace the demo fetch URL:
-fetch('https://pub-xxxx.r2.dev/demo-digest.json')
+    R2_BUCKET: "ecosystem-radar"
 ```
 
 ### Alternatives
 
 | Option | Notes |
 |--------|-------|
-| **GitHub Actions + S3** | Same pattern, swap GitLab CI for GH Actions and R2 for S3 |
-| **AWS Lambda** | Works but 15min timeout is tight for large watchlists |
-| **Modal.com** | Best pure-Python serverless option — native cron, no timeout issues |
-| **Local cron** | `crontab -e` → `0 7 * * * cd /path && python run.py` — simplest of all |
+| **GitHub Actions + S3** | Swap GitLab CI for GH Actions and R2 for S3 |
+| **Modal.com** | Best pure-Python serverless — native cron, no timeout issues |
+| **Local cron** | `crontab -e` → `0 7 * * * cd /path && python run.py` |
 
 ---
 
@@ -184,12 +217,12 @@ fetch('https://pub-xxxx.r2.dev/demo-digest.json')
 
 | Phase | Feature |
 |-------|---------|
-| ✅ MVP | Web scraping, signal extraction, ranking, action generation |
-| Phase 2 | Salesforce account mapping — connect signals to open opps |
-| Phase 2 | Slack bot delivery — post digest to #partnerships channel |
-| Phase 3 | Automated partner outreach — draft and queue emails |
-| Phase 3 | Buying committee mapping — match signals to account contacts |
-| Phase 3 | Feedback loop — "was this useful?" thumbs up/down |
+| ✅ MVP | Scout brief generator, daily digest, radar UI |
+| Phase 2 | Salesforce integration — map signals and briefs to open opps |
+| Phase 2 | Slack bot — post digest to #account-team and DM reps on their accounts |
+| Phase 3 | LinkedIn Sales Navigator API — monitor named contacts for deal signals |
+| Phase 3 | Auto-outreach queue — draft and stage partner emails from digest actions |
+| Phase 3 | Feedback loop — "was this useful?" trains signal scoring over time |
 
 ---
 

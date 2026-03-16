@@ -4,9 +4,10 @@
 # Anthropic SDK — core LLM client
 anthropic>=0.40.0
 
-# Web scraping
+# Web scraping + search
 requests>=2.31.0
 beautifulsoup4>=4.12.0
+duckduckgo-search>=6.0.0
 
 # PowerPoint output (--formats pptx)
 python-pptx>=0.6.23
